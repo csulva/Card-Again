@@ -1,11 +1,24 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
+{{ super() }}
+<!DOCTYPE html>
 {% block content %}
-    <body>
-        {% if username %}
-        <h1>Welcome, {{ user.username }}!</h1>
-        {% else %}
-        <h1>Welcome to Card Again!</h1>
-        {% endif %}
-    </body>
+<html lang="en">
+    <body id="page-top">
+        <!-- Header-->
+        <header class="masthead text-center text-white">
+            <div class="masthead-content">
+                {% if username %}
+                <h1>Welcome, {{ user.username }}!</h1>
+                {% else %}
+                <h1>Welcome to Card Again!</h1>
+                {% endif %}
+                <div class="container px-5">
+                    <h1 class="masthead-heading mb-0">One Page Wonder</h1>
+                    <h2 class="masthead-subheading mb-0">Will Rock Your Socks Off</h2>
+                    <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#scroll">Learn More</a>
+                </div>
+            </div>
+
+        </header>
 {% endblock content %}
