@@ -1,12 +1,11 @@
-from re import L
-from app import app
+from . import main
 from flask import render_template, url_for
 
-@app.route('/')
+@main.route('/')
 def index():
     username = None
     return render_template('index.html', username=username)
 
-@app.route('/login')
+@main.route('/login')
 def login():
     return render_template('login.html')
