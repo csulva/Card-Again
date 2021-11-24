@@ -6,6 +6,6 @@ def index():
     username = None
     return render_template('index.html', username=username)
 
-@main.route('/login')
-def login():
-    return render_template('login.html')
+@main.route('/test')
+def test():
+    return render_template('test.html')
