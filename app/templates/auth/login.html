@@ -2,7 +2,8 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
-<h1> Sign In</h1>
+<div class="form-profile" style='background-color: white'>
+    <h1> Sign In</h1>
     {{ wtf.quick_form(form) }}
     <p>
         New user?
@@ -10,5 +11,6 @@
         Click here to register
         </a>
         </p>
+</div>
 {% endblock content %}
 

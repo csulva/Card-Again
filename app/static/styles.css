@@ -2312,6 +2312,13 @@ progress {
   background-color: #dde0e3;
 }
 
+.form-profile {
+  min-height: 260px;
+  margin-top: 100px;
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
 .form-control-plaintext {
   display: block;
   width: 100%;
