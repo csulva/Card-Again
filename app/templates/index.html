@@ -9,7 +9,7 @@
         <header class="masthead text-center text-white">
             <div class="masthead-content">
                 {% if username %}
-                <h1>Welcome, {{ user.username }}!</h1>
+                <h1>Welcome, {{ current_user.username }}!</h1>
                 {% else %}
                 <h1>Welcome to Card Again!</h1>
                 {% endif %}

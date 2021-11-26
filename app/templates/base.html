@@ -19,7 +19,6 @@
         </head>
     {% endblock head %}
     <body style="background-color:darkslateblue">
-
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom fixed-top">
             <div class="container px-5">
@@ -27,12 +26,27 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#!">Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('auth.register')}}">Sign Up</a></li>
+                        {% if current_user.is_anonymous %}
                         <li class="nav-item"><a class="nav-link" href="{{url_for('auth.login')}}">Log In</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('auth.login')}}">Log Out</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
+
         {% block content %}{% endblock %}
+        {% for msg in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="done" style='  min-height: 26px;
+            margin-top: 10px;
+            margin-left: 15px;
+            margin-right: 15px;'
+            data-dismiss="alert">&times;</button>
+            {{ msg }}
+        </div>
+        {% endfor %}
     </body>
 </html>
