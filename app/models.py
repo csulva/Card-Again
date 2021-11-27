@@ -15,6 +15,7 @@ class User(UserMixin, db.Model):
     def __repr__(self) -> str:
         return '<User {}>'.format(self.username)
 
+    #create their own passwords?
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
