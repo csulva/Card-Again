@@ -7,7 +7,11 @@
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
             <meta name="description" content="" />
             <meta name="author" content="" />
+            {% if title %}
+            <title>{{title}}</title>
+            {% else %}
             <title>Card Again</title>
+            {% endif %}
             <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/5966/5966725.png" />
             <!-- Font Awesome icons (free version)-->
             <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
@@ -26,11 +30,11 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{url_for('auth.register')}}">Sign Up</a></li>
                         {% if current_user.is_anonymous %}
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('auth.register')}}">Sign Up</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{url_for('auth.login')}}">Log In</a></li>
                         {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{{url_for('auth.login')}}">Log Out</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('auth.logout')}}">Log Out</a></li>
                         {% endif %}
                     </ul>
                 </div>
