@@ -15,7 +15,10 @@ class User(UserMixin, db.Model):
     def __repr__(self) -> str:
         return '<User {}>'.format(self.username)
 
-    #create their own passwords?
+    @property
+    def password(self):
+        raise AttributeError('Password is not a readable attribute')
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
