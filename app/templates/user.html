@@ -1,22 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{{ super() }}
 <div class="page-header">
-    <table>
-    <td>
-        <h1>User: {{ user.username }}</h1>
-        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-        {% if user.last_seen %}<p>Last seen: {{ moment(user.last_seen).fromNow() }}</p>{% endif %}
-    </td>
-        <tr valign="top">
-            <td><img class="img-rounded profile-thumbnail" src="{{ user.avatar() }}"></td>
+    <h1>{{ user.username }}</h1>
+    <img class="img-rounded profile-thumbnail" src="{{ user.avatar() }}">
+    <div class="profile-header">
+    {# {% if current_user.is_anonymous %}
+    {% elif current_user.is_following(user) and current_user.username != user.username %}
+    <a class="btn btn-default" href="{{ url_for('.unfollow', username=user.username) }}">
+        Unfollow
+    </a>
+    {% elif not current_user.is_following(user) and current_user.username != user.username %}
+    <a class="btn btn-default" href="{{ url_for('.follow', username=user.username) }}">
+        Follow
+    </a>
+    {% endif %}
+    <button type="button" class="btn btn-light">
+       <a href="{{ url_for('.following', username=user.username) }}">Following</a> <span class="badge badge-light">{{user.following.count() - 1}}</span>
+      </button>
+    <button type="button" class="btn btn-light">
+        <a href="{{ url_for('.followers', username=user.username) }}">Followers</a> <span class="badge badge-light">{{user.followers.count() - 1}}</span>
+       </button> #}
+    <table class="table" style="color: white">
+        <tbody>
+        <tr>
+        <tr>
+        <th scope="row">About Me</th>
+        <td>{% if user.about_me %}{{ user.about_me }}{% endif %}</td>
         </tr>
+        <tr>
+        <th scope="row">Last seen</th>
+        <td>{{ moment(user.last_seen).fromNow() }}</td>
+        </tr>
+        </tbody>
     </table>
+    {% if user.username == current_user.username %}
+    <a class="btn btn-default" style="background-color: white;" href="{{ url_for('.edit_profile') }}">
+        Edit Profile
+    </a>
+    {% endif %}
+    {#
+    {% if current_user.is_administrator() %}
+    <a class="btn btn-danger" href="{{ url_for('.admin_edit_profile', id=user.id) }}">
+        Edit As Admin
+    </a>
+    {% endif %} #}
+    </div>
 </div>
-<div class='collection-header'>
-    <h2>Collection</h2>
-            {% for card in cards %}
-                {% include '_cards.html' %}
-            {% endfor %}
-</div>
-{% endblock %}
+{% endblock content %}
