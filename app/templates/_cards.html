@@ -1,0 +1,48 @@
+{#
+<ul class="cards">
+    {% for card in cards %}
+    <li class = "composition">
+        <div class="profile-thumbnail">
+            <a href="{{ url_for('main.user', username=card.ownder.username) }}">
+                <img class="img-rounded profile-thumbnail" src="{{ card.owner.avatar(size=64) }}">
+            </a>
+        </div>
+        <div class="card-content">
+            <div class="card-owner">
+                <a href="{{ url_for('main.user', username=card.owner.username) }}">
+                    {{ card.owner.username }}
+                </a>
+            </div>
+            <div class="composition-title">
+                <a href='{{ url_for("main.composition", slug=composition.slug) }}'>{{ composition.title }}</a>
+            </div>
+            <div class="composition-description">
+                {% if composition.description_html %}
+                {{ composition.description_html | safe }}
+                {% else %}
+                {{ composition.description }}
+                {% endif %}
+            </div>
+        </div>
+        {% if composition.artist.username == current_user.username %}
+        <a class="btn btn-default" href="{{ url_for('.edit_composition', slug=composition.slug) }}">
+            Edit Composition
+        </a>
+        {% elif current_user.is_administrator() %}
+        <a class="btn btn-danger" href="{{ url_for('.edit_composition', slug=composition.slug) }}">
+            Edit Composition As Admin
+        </a>
+        {% endif %}
+
+        {% if composition.artist.username == current_user.username %}
+        <a class="btn btn-default" href="{{ url_for('.delete_composition', slug=composition.slug) }}">
+            Delete Composition
+        </a>
+        {% elif current_user.is_administrator() %}
+        <a class="btn btn-danger" href="{{ url_for('.delete_composition', slug=composition.slug) }}">
+            Delete Composition as Admin
+        </a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul> #}
