@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <table>
+    <td>
+        <h1>User: {{ user.username }}</h1>
+        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+        {% if user.last_seen %}<p>Last seen: {{ moment(user.last_seen).fromNow() }}</p>{% endif %}
+    </td>
+        <tr valign="top">
+            <td><img class="img-rounded profile-thumbnail" src="{{ user.avatar() }}"></td>
+        </tr>
+    </table>
+</div>
+<div class='collection-header'>
+    <h2>Collection</h2>
+            {% for card in cards %}
+                {% include '_cards.html' %}
+            {% endfor %}
+</div>
+{% endblock %}
