@@ -2319,6 +2319,32 @@ progress {
   margin-right: 150px;
 }
 
+.profile-header {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 170px;
+    color: white;
+}
+
+.page-header {
+  min-height: 260px;
+  margin-left: 115px;
+  margin-right: 115px;
+  margin-top: 100px;
+  color: white;
+}
+
+.collection-header {
+  min-height: 260px;
+  margin-left: 115px;
+  margin-right: 115px;
+  color: white;
+}
+
+.profile-thumbnail {
+  position: absolute;
+}
+
 .form-control-plaintext {
   display: block;
   width: 100%;
