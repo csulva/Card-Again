@@ -1,0 +1,1 @@
+A new user has been created: {{ user.username }}
