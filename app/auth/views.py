@@ -4,6 +4,7 @@ from flask import render_template, url_for, redirect, flash, request
 from .forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
+from app.email import send_email
 from werkzeug.urls import url_parse
 
 @auth.route('/login', methods=["GET", "POST"])
@@ -43,13 +44,50 @@ def register():
             user.set_password(password_entered)
             db.session.add(user)
             db.session.commit()
-            # token = user.generate_confirmation_token()
-            # confirmation_link = url_for('auth.confirm', token=token, _external=True)
-            # send_email(user.email, 'Welcome to Card Again!', 'mail/welcome', user=user)
-            # send_email(user.email, 'Confirm your account with Card Again', 'auth/confirm',  confirmation_link=confirmation_link)
-            # send_email('chrservices15@gmail.com', 'A new user has been created!', 'mail/new_user', user=user)
-            flash('Thanks for registering!')
+            token = user.generate_confirmation_token()
+            confirmation_link = url_for('auth.confirm', token=token, _external=True)
+            send_email(user.email, 'Welcome to Card Again!', 'mail/welcome', user=user)
+            send_email(user.email, 'Confirm your account with Card Again', 'auth/confirm',  confirmation_link=confirmation_link)
+            send_email('chrservices15@gmail.com', 'A new user has been created!', 'mail/new_user', user=user)
+            flash('Thanks for registering! Check your email for a link to confirm your account.')
             return redirect(url_for('auth.login'))
         else:
             return redirect(url_for('auth.register'))
     return render_template('auth/register.html', form=form, title='Register for Card Again')
+
+@auth.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        flash("You're already confirmed!")
+        return redirect(url_for('main.index'))
+    if current_user.confirm(token):
+        db.session.commit()
+        flash('You have confirmed your account! Thank you.')
+    else:
+        flash("Whoops! That confirmation link either expired, or it isn't valid.")
+    return redirect(url_for('main.index'))
+
+@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated \
+            and not current_user.confirmed \
+            and request != 'static' \
+            and request.blueprint != 'auth' \
+            and request.endpoint != 'static':
+        return redirect(url_for('auth.unconfirmed'))
+
+@auth.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('main.index'))
+    return render_template('auth/unconfirmed.html', user=current_user)
+
+@auth.route('/resend_confirmation')
+def resend_confirmation():
+    user = current_user
+    token = user.generate_confirmation_token()
+    confirmation_link = url_for('auth.confirm', token=token, _external=True)
+    send_email(user.email, 'Confirm your account with Ragtime', 'auth/confirm', user=user, confirmation_link=confirmation_link)
+    flash('Message sent! Check your email for the new confirmation link.')
+    return redirect(url_for('auth.unconfirmed'))
