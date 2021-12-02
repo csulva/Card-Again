@@ -4,6 +4,7 @@ from flask_login import UserMixin
 from hashlib import md5
 from datetime import datetime
 from flask import current_app
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 class User(UserMixin, db.Model):
@@ -15,6 +16,7 @@ class User(UserMixin, db.Model):
 
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    confirmed = db.Column(db.Boolean, default=False)
 
     cards = db.relationship('Card', backref='owner', lazy='dynamic')
 
@@ -58,6 +60,22 @@ class User(UserMixin, db.Model):
             if u.role == None:
                 u.role = Role.query.filter_by(default=True).first()
                 db.session.commit()
+
+    def generate_confirmation_token(self, expiration_sec=3600):
+        s = Serializer(current_app.secret_key, expiration_sec)
+        return s.dumps({'confirm_id': self.id}).decode('utf-8')
+
+    def confirm(self, token):
+        s = Serializer(current_app.secret_key)
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        if data.get('confirm_id') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        return True
 
 
 class Card(db.Model):
