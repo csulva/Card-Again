@@ -23,7 +23,10 @@
         </head>
     {% endblock head %}
     <body style="background-color:darkslateblue; color:white">
+
+
         <!-- Navigation-->
+        {% block navbar %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom fixed-top">
             <div class="container px-5">
                 <a class="navbar-brand" href="{{ url_for('main.index') }}">Card Again</a>
@@ -41,21 +44,24 @@
                 </div>
             </div>
         </nav>
-
-        {% block content %}{% endblock %}
-        {% for msg in get_flashed_messages() %}
-        <div class="alert alert-warning">
-            <button type="button" class="done" style='  min-height: 26px;
-            margin-top: 10px;
-            margin-left: 15px;
-            margin-right: 15px;'
-            data-dismiss="alert">&times;</button>
-            {{ msg }}
-        </div>
-        {% endfor %}
-
     </body>
+    {% endblock navbar %}
+    {% block flashed %}
+    {% for msg in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" style='min-height: 2px;
+        margin-top: 90px;
+        margin-left: 15px;
+        margin-right: 15px;'
+        data-dismiss="alert">&times;</button>
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% endblock flashed %}
+    {% block content %}{% endblock %}
 </html>
+
+
 
 {% block scripts %}
 {{ moment.include_moment() }}
