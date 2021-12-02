@@ -1,1 +1,2 @@
 Welcome {{ user.username }} to Card Again!
+We hope you enjoy our community.
