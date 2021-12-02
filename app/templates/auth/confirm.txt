@@ -1,0 +1,2 @@
+Welcome to Card Again!
+Please confirm your account with this link: {{ confirmation_link }}
