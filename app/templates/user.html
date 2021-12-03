@@ -6,17 +6,17 @@
     <h1>{{ user.username }}</h1>
     <img class="img-rounded profile-thumbnail" src="{{ user.avatar() }}">
     <div class="profile-header">
-    {# {% if current_user.is_anonymous %}
+    {% if current_user.is_anonymous %}
     {% elif current_user.is_following(user) and current_user.username != user.username %}
-    <a class="btn btn-default" href="{{ url_for('.unfollow', username=user.username) }}">
+    <a class="btn btn-default" style="background-color: white" href="{{ url_for('.unfollow', username=user.username) }}">
         Unfollow
     </a>
     {% elif not current_user.is_following(user) and current_user.username != user.username %}
-    <a class="btn btn-default" href="{{ url_for('.follow', username=user.username) }}">
+    <a class="btn btn-default" style="background-color: white" href="{{ url_for('.follow', username=user.username) }}">
         Follow
     </a>
     {% endif %}
-    <button type="button" class="btn btn-light">
+    {# <button type="button" class="btn btn-light">
        <a href="{{ url_for('.following', username=user.username) }}">Following</a> <span class="badge badge-light">{{user.following.count() - 1}}</span>
       </button>
     <button type="button" class="btn btn-light">
