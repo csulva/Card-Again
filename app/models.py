@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     about_me = db.Column(db.String(140))
+    name = db.Column(db.String(64))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
 
