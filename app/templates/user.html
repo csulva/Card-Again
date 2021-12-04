@@ -25,6 +25,9 @@
     <table class="table" style="color: white">
         <tbody>
         <tr>
+        <th scope="row">Name</th>
+        <td>{% if user.name %}{{ user.name }}{% endif %}</td>
+        </tr>
         <tr>
         <th scope="row">About Me</th>
         <td>{% if user.about_me %}{{ user.about_me }}{% endif %}</td>
