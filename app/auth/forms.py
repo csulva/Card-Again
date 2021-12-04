@@ -25,3 +25,36 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already exists.')
+
+class ChangeEmail(FlaskForm):
+    old_email = StringField("Old Email", validators=[DataRequired(), Email()])
+    email = StringField("New Email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Submit")
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('Email already registered by another user.')
+
+class ChangeEmail(FlaskForm):
+    old_email = StringField("Old Email", validators=[DataRequired(), Email()])
+    email = StringField("New Email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Submit")
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('Email already registered by another user.')
+
+class ChangePassword(FlaskForm):
+    password = PasswordField("Old Password", validators=[DataRequired()])
+    new_password = PasswordField('Password', validators=[DataRequired(), EqualTo('new_password_confirm', message='Passwords do not match.'
+        )])
+    new_password_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+class ChangeUsername(FlaskForm):
+    new_username = StringField("New Username", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('Username already registered by another user.')

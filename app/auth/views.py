@@ -1,7 +1,7 @@
 from . import auth
 from app import db
 from flask import render_template, url_for, redirect, flash, request
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ChangeEmail, ChangePassword, ChangeUsername
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from app.email import send_email
@@ -91,3 +91,50 @@ def resend_confirmation():
     send_email(user.email, 'Confirm your account with Ragtime', 'auth/confirm', user=user, confirmation_link=confirmation_link)
     flash('Message sent! Check your email for the new confirmation link.')
     return redirect(url_for('auth.unconfirmed'))
+
+@auth.route('/change-email', methods=["GET", "POST"])
+@login_required
+def change_email():
+    form = ChangeEmail()
+    if form.validate_on_submit():
+        old_email = form.old_email.data
+        email = form.email.data
+        if current_user.email == old_email:
+            current_user.email = email
+            db.session.add(current_user)
+            db.session.commit()
+            flash('You have successfully changed your email address.')
+            return redirect(url_for('auth.login'))
+        else:
+            flash('Your old email does not match our records. Please try again.')
+    return render_template('auth/change-email.html', form=form)
+
+@auth.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePassword()
+    if form.validate_on_submit():
+        password = form.password.data
+        new_password = form.new_password.data
+        if current_user.verify_password(password) == True:
+            current_user.password = new_password
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Your password has been changed successfully.')
+            return redirect(url_for('auth.login'))
+        else:
+            flash('Old password does not match records. Try again.')
+    return render_template('auth/change-password.html', form=form)
+
+@auth.route('/change-username', methods=["GET", "POST"])
+@login_required
+def change_username():
+    form = ChangeUsername()
+    if form.validate_on_submit():
+        username = form.new_username.data
+        current_user.username = username
+        db.session.add(current_user)
+        db.session.commit()
+        flash('You have successfully changed your username.')
+        return redirect(url_for('auth.login'))
+    return render_template('auth/change-username.html', form=form)
