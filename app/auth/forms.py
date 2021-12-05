@@ -5,7 +5,7 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(1, 64)])
+    email = StringField('Email', validators=[DataRequired(), Length(1, 64)])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
@@ -46,7 +46,7 @@ class ChangeEmail(FlaskForm):
 
 class ChangePassword(FlaskForm):
     password = PasswordField("Old Password", validators=[DataRequired()])
-    new_password = PasswordField('Password', validators=[DataRequired(), EqualTo('new_password_confirm', message='Passwords do not match.'
+    new_password = PasswordField('New Password', validators=[DataRequired(), EqualTo('new_password_confirm', message='Passwords do not match.'
         )])
     new_password_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField("Submit")
