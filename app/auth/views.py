@@ -13,7 +13,7 @@ def login():
         return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password. Try again.')
             return redirect(url_for('auth.login'))
@@ -116,8 +116,8 @@ def change_password():
     if form.validate_on_submit():
         password = form.password.data
         new_password = form.new_password.data
-        if current_user.verify_password(password) == True:
-            current_user.password = new_password
+        if current_user.check_password(password) == True:
+            current_user.set_password(new_password)
             db.session.add(current_user)
             db.session.commit()
             flash('Your password has been changed successfully.')
