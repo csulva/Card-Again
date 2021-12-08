@@ -5,6 +5,7 @@ from hashlib import md5
 from datetime import datetime
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+import json
 
 
 followers = db.Table('followers',
@@ -115,12 +116,22 @@ class User(UserMixin, db.Model):
 
 class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
+    card_id = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # change this
-    # def __repr__(self):
-    #     return '<Post {}>'.format(self.body)
+    def __repr__(self):
+        return f'<Card_ID: {self.card_id}>'
+
+    @staticmethod
+    def insert_cards():
+        with open('API/card_ids.json', 'r') as fin:
+            ids = json.load(fin)
+        for card_id in ids:
+            card = Card(card_id=card_id)
+            db.session.add(card)
+        db.session.commit()
+
 
 
 @login.user_loader
