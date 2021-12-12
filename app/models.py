@@ -111,9 +111,6 @@ class User(UserMixin, db.Model):
         own = Card.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Card.id.asc())
 
-
-
-
 class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     card_id = db.Column(db.String())
@@ -131,8 +128,6 @@ class Card(db.Model):
             card = Card(card_id=card_id)
             db.session.add(card)
         db.session.commit()
-
-
 
 @login.user_loader
 def load_user(id):
