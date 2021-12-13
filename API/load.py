@@ -15,6 +15,7 @@ while num < 59:
             for dicts in value:
                 for key_data, value_data in dicts.items():
                     if key_data == 'id':
+                        # dict_of_important_card_information['id'] = value_data
                         list_of_ids.append(value_data)
     num += 1
 
