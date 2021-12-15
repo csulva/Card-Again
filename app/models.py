@@ -115,17 +115,106 @@ class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     card_id = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    name = db.Column(db.String())
+    rarity = db.Column(db.String())
+    pokedex_number = db.Column(db.Integer)
+    image = db.Column(db.String())
+    url = db.Column(db.String())
+    last_updated = db.Column(db.String())
+    normal_price_low = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    normal_price_mid = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    normal_price_high = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    normal_price_market = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    holofoil_price_low = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    holofoil_price_mid = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    holofoil_price_high = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    holofoil_price_market = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    reverse_holofoil_price_low = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    reverse_holofoil_price_mid = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    reverse_holofoil_price_high = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    reverse_holofoil_price_market = db.Column(db.Float(precision=(10, 2), asdecimal=True))
 
-    # change this
     def __repr__(self):
         return f'<Card_ID: {self.card_id}>'
 
     @staticmethod
     def insert_cards():
-        with open('API/card_ids.json', 'r') as fin:
-            ids = json.load(fin)
-        for card_id in ids:
-            card = Card(card_id=card_id)
+        with open('API/card_data.json', 'r') as fin:
+            data = json.load(fin)
+        for info in data:
+            card_id=info['id']
+            name=info['name']
+            rarity=info['rarity']
+            pokedex_number=info['pokedex_number']
+            image=info['image']
+            url=info['url']
+            last_updated=info['last_updated']
+            try:
+                if info['price']['normal']['low']:
+                    normal_price_low = float(info['price']['normal']['low'])
+            except:
+                normal_price_low=None
+            try:
+                if info['price']['normal']['mid']:
+                    normal_price_mid = float(info['price']['normal']['mid'])
+            except:
+                normal_price_mid=None
+            try:
+                if info['price']['normal']['high']:
+                    normal_price_high = float(info['price']['normal']['high'])
+            except:
+                normal_price_high=None
+            try:
+                if info['price']['normal']['market']:
+                    normal_price_market = float(info['price']['normal']['market'])
+            except:
+                normal_price_market=None
+            try:
+                if info['price']['holofoil']['low']:
+                    holofoil_price_low = float(info['price']['holofoil']['low'])
+            except:
+                holofoil_price_low=None
+            try:
+                if info['price']['holofoil']['mid']:
+                    holofoil_price_mid = float(info['price']['holofoil']['mid'])
+            except:
+                holofoil_price_mid=None
+            try:
+                if info['price']['holofoil']['high']:
+                    holofoil_price_high = float(info['price']['holofoil']['high'])
+            except:
+                holofoil_price_high=None
+            try:
+                if info['price']['holofoil']['market']:
+                    holofoil_price_market = float(info['price']['holofoil']['market'])
+            except:
+                holofoil_price_market=None
+            try:
+                if info['price']['reverseHolofoil']['low']:
+                    reverse_holofoil_price_low = float(info['price']['reverseHolofoil']['low'])
+            except:
+                reverse_holofoil_price_low=None
+            try:
+                if info['price']['reverseHolofoil']['mid']:
+                    reverse_holofoil_price_mid = float(info['price']['reverseHolofoil']['mid'])
+            except:
+                reverse_holofoil_price_mid=None
+            try:
+                if info['price']['reverseHolofoil']['high']:
+                    reverse_holofoil_price_high = float(info['price']['reverseHolofoil']['high'])
+            except:
+                reverse_holofoil_price_high=None
+            try:
+                if info['price']['reverseHolofoil']['market']:
+                    reverse_holofoil_price_market = float(info['price']['reverseHolofoil']['market'])
+            except:
+                reverse_holofoil_price_market=None
+
+            card=Card(card_id=card_id, name=name, rarity=rarity, pokedex_number=pokedex_number,
+            image=image, url=url, last_updated=last_updated,
+            normal_price_low=normal_price_low, normal_price_mid=normal_price_mid, normal_price_high=normal_price_high, normal_price_market=normal_price_market,
+            holofoil_price_low=holofoil_price_low, holofoil_price_mid=holofoil_price_mid, holofoil_price_high=holofoil_price_high, holofoil_price_market=holofoil_price_market,
+            reverse_holofoil_price_low=reverse_holofoil_price_low, reverse_holofoil_price_mid=reverse_holofoil_price_mid, reverse_holofoil_price_high=reverse_holofoil_price_high, reverse_holofoil_price_market=reverse_holofoil_price_market)
             db.session.add(card)
         db.session.commit()
 
