@@ -77,3 +77,9 @@ def unfollow(username):
     db.session.commit()
     flash(f"You have successfully unfollowed {username}.")
     return redirect(url_for('.user', username=username))
+
+@main.route('/card/<slug>')
+def composition(slug):
+    card = Card.query.filter_by(slug=slug).first_or_404()
+    slug = card.slug
+    return render_template('card.html', cards=[card], slug=slug)
