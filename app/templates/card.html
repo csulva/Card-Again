@@ -1,7 +1,9 @@
-{# {% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 {{ super() }}
-{% include '_cards.html' %}
-
-{% endblock content %} #}
+<!-- {% include '_cards.html' %} -->
+{% for card in cards %}
+    <img src="{{card.image}}">
+{% endfor %}
+{% endblock content %}
