@@ -230,7 +230,6 @@ class Card(db.Model):
         db.session.commit()
 
 
-
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
