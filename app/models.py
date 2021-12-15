@@ -6,6 +6,7 @@ from datetime import datetime
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import json
+import re
 
 
 followers = db.Table('followers',
@@ -134,8 +135,17 @@ class Card(db.Model):
     reverse_holofoil_price_high = db.Column(db.Float(precision=(10, 2), asdecimal=True))
     reverse_holofoil_price_market = db.Column(db.Float(precision=(10, 2), asdecimal=True))
 
+    slug = db.Column(db.String(128), unique=True)
+
     def __repr__(self):
         return f'<Card_ID: {self.card_id}>'
+
+    @staticmethod
+    def generate_slug():
+        for card in Card.query.all():
+            card.slug = f"{card.id}-" + re.sub(r'[^\w]+', '-', card.card_id.lower())
+            db.session.add(card)
+        db.session.commit()
 
     @staticmethod
     def insert_cards():
@@ -216,7 +226,10 @@ class Card(db.Model):
             holofoil_price_low=holofoil_price_low, holofoil_price_mid=holofoil_price_mid, holofoil_price_high=holofoil_price_high, holofoil_price_market=holofoil_price_market,
             reverse_holofoil_price_low=reverse_holofoil_price_low, reverse_holofoil_price_mid=reverse_holofoil_price_mid, reverse_holofoil_price_high=reverse_holofoil_price_high, reverse_holofoil_price_market=reverse_holofoil_price_market)
             db.session.add(card)
+        Card.generate_slug()
         db.session.commit()
+
+
 
 @login.user_loader
 def load_user(id):
