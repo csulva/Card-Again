@@ -14,6 +14,10 @@ followers = db.Table('followers',
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
+collections = db.Table('collections',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('card_id', db.Integer, db.ForeignKey('card.id'))
+    )
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +31,7 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
 
-    cards = db.relationship('Card', backref='owner', lazy='dynamic')
+    cards = db.relationship('Card', secondary=collections, backref='owner', lazy='dynamic')
 
     followed = db.relationship(
         'User', secondary=followers,
