@@ -83,3 +83,19 @@ def composition(slug):
     card = Card.query.filter_by(slug=slug).first_or_404()
     slug = card.slug
     return render_template('card.html', cards=[card], slug=slug)
+
+@main.route('/add/<id>')
+@login_required
+@permission_required(Permission.FOLLOW)
+def add(id):
+    card = Card.query.filter_by(card_id=id).first()
+    if card is None:
+        flash("That is not a valid card.")
+        return redirect(url_for('.index'))
+    if card in current_user.cards:
+        flash("Looks like you are already have that card in your collection.")
+        return redirect(url_for('.card', slug=card.slug))
+    current_user.cards.append(card)
+    db.session.commit()
+    flash(f"You have added the card to your collection.")
+    return redirect(url_for('.user', username=current_user.username))
