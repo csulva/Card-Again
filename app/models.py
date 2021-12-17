@@ -124,6 +124,8 @@ class Card(db.Model):
     rarity = db.Column(db.String())
     pokedex_number = db.Column(db.Integer)
     image = db.Column(db.String())
+    set_name = db.Column(db.String())
+    set_series = db.Column(db.String())
     url = db.Column(db.String())
     last_updated = db.Column(db.String())
     normal_price_low = db.Column(db.Float(precision=(10, 2), asdecimal=True))
@@ -161,6 +163,8 @@ class Card(db.Model):
             rarity=info['rarity']
             pokedex_number=info['pokedex_number']
             image=info['image']
+            set_name=info['set_name']
+            set_series=info['set_series']
             url=info['url']
             last_updated=info['last_updated']
             try:
@@ -225,7 +229,7 @@ class Card(db.Model):
                 reverse_holofoil_price_market=None
 
             card=Card(card_id=card_id, name=name, rarity=rarity, pokedex_number=pokedex_number,
-            image=image, url=url, last_updated=last_updated,
+            image=image, set_name=set_name, set_series=set_series, url=url, last_updated=last_updated,
             normal_price_low=normal_price_low, normal_price_mid=normal_price_mid, normal_price_high=normal_price_high, normal_price_market=normal_price_market,
             holofoil_price_low=holofoil_price_low, holofoil_price_mid=holofoil_price_mid, holofoil_price_high=holofoil_price_high, holofoil_price_market=holofoil_price_market,
             reverse_holofoil_price_low=reverse_holofoil_price_low, reverse_holofoil_price_mid=reverse_holofoil_price_mid, reverse_holofoil_price_high=reverse_holofoil_price_high, reverse_holofoil_price_market=reverse_holofoil_price_market)
