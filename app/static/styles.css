@@ -2345,6 +2345,97 @@ progress {
     color: white;
 }
 
+.user-profile-thumbnail {
+  position: absolute;
+  border: 2px solid black;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+/* ul.card {
+  min-height: 300px;
+  margin-top: 100px;
+  margin-left: 150px;
+  margin-right: 150px;
+  color: black;
+  list-style-type: none;
+}
+
+li.one-card{
+  min-height: 320px;
+  margin-top: 35px;
+}
+
+div.card-profile-thumbnail{
+  height:342px;
+  width:246px;
+  top: 5%;
+  left: 3%;
+}
+
+div.one-card-content{
+  border-width: 10px;
+  margin-top: 50px;
+  margin-left: 250px;
+  margin-right: 50px;
+}
+
+div.one-card-title{
+  font-weight: bold;
+  padding: 2px;
+} */
+
+ul.cards {
+  min-height: 320px;
+  margin-top: 100px;
+  margin-left: 150px;
+  margin-right: 150px;
+  color: black;
+  list-style-type: none;
+}
+
+li.card {
+  min-height: 320px;
+  margin-top: 35px;
+  background-color: #e1dcff;
+}
+
+/* div.card-button{
+  margin-left: 250px;
+  border-width: 10px;
+} */
+
+.profile-thumbnail {
+  height:291px;
+  width:209px;
+  top: 2%;
+  left: 1%;
+box-shadow:
+  rgba(22, 31, 39, 0.42) 0px 60px 123px -25px,
+  rgba(19, 26, 32, 0.08) 0px 35px 75px -35px;
+}
+
+div.collection-title{
+  margin-top: 80px;
+  margin-left: 115px
+}
+
+div.card-content{
+  border-width: 10px;
+  margin-top: 25px;
+  margin-left: 275px;
+  margin-right: 50px;
+}
+
+div.card-title{
+  font-weight: bold;
+  padding: 2px;
+}
+
+div.card-description{
+  padding: 3px;
+}
+
 .text-container {
   margin-left: 100px;
   margin-right: 100px;
