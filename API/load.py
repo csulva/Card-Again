@@ -29,6 +29,13 @@ while num < 59:
                     dict_of_card_info['pokedex_number'] = None
                 dict_of_card_info['image'] = dicts['images']['small']
                 try:
+                    if dicts['set']:
+                        dict_of_card_info['set_name'] = dicts['set']['name']
+                        dict_of_card_info['set_series'] = dicts['set']['series']
+                except:
+                    dict_of_card_info['set_name'] = None
+                    dict_of_card_info['set_series'] = None
+                try:
                     if dicts['tcgplayer']['url']:
                         dict_of_card_info['url'] = dicts['tcgplayer']['url']
                 except:
