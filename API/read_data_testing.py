@@ -3,7 +3,8 @@ import json
 with open('API/card_data.json', 'r') as fin:
     card_data = json.load(fin)
 
-print(float(card_data[0]['price']['holofoil']['low']))
+print(card_data[1]['set_name'])
+print(card_data[1]['set_series'])
 
 # for info in card_data:
 #     try:
