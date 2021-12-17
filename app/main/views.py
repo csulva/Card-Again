@@ -21,8 +21,7 @@ def test():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    cards = []
-    return render_template('user.html', user=user, cards=cards)
+    return render_template('user.html', user=user, cards=user.cards, getattr=getattr)
 
 @main.before_request
 def before_request():
@@ -79,16 +78,16 @@ def unfollow(username):
     return redirect(url_for('.user', username=username))
 
 @main.route('/card/<slug>')
-def composition(slug):
+def card(slug):
     card = Card.query.filter_by(slug=slug).first_or_404()
     slug = card.slug
-    return render_template('card.html', cards=[card], slug=slug)
+    return render_template('card.html', cards=[card], slug=slug, getattr=getattr)
 
-@main.route('/add/<id>')
+@main.route('/add/<card_id>')
 @login_required
 @permission_required(Permission.FOLLOW)
-def add(id):
-    card = Card.query.filter_by(card_id=id).first()
+def add(card_id):
+    card = Card.query.filter_by(card_id=card_id).first()
     if card is None:
         flash("That is not a valid card.")
         return redirect(url_for('.index'))
@@ -98,4 +97,4 @@ def add(id):
     current_user.cards.append(card)
     db.session.commit()
     flash(f"You have added the card to your collection.")
-    return redirect(url_for('.user', username=current_user.username))
+    return redirect(url_for('.user', username=current_user.username, card_id=card.card_id))
