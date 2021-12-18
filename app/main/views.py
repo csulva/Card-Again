@@ -1,6 +1,7 @@
+from re import M
 from flask_login.utils import login_required
 from app import db
-from app.main.forms import EditProfileForm
+from app.main.forms import EditProfileForm, SearchCardForm
 from . import main
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import current_user
@@ -8,9 +9,16 @@ from app.models import User, Card, Permission
 from datetime import datetime
 from ..decorators import permission_required
 
-@main.route('/')
+@main.route('/', methods=["GET", "POST"])
 def index():
-    return render_template('index.html', user=current_user)
+    form = SearchCardForm()
+    if form.validate_on_submit():
+        search = form.search.data.capitalize()
+        cards = Card.query.filter_by(name=search).all()
+        if cards == []:
+            return redirect(url_for('main.no_results', cards=cards, search=search))
+        return redirect(url_for('main.search_results', search=search))
+    return render_template('index.html', user=current_user, form=form)
 
 @main.route('/test')
 @login_required
@@ -98,3 +106,21 @@ def add(card_id):
     db.session.commit()
     flash(f"You have added the card to your collection.")
     return redirect(url_for('.user', username=current_user.username, card_id=card.card_id))
+
+@main.route('/search_results/<search>')
+def search_results(search):
+    cards = Card.query.filter_by(name=search).all()
+    message = f'{len(cards)} Results for "{search}"'
+    return render_template('search_results.html', message=message, cards=cards, search=search)
+
+@main.route('/no_results/<search>', methods=['GET', 'POST'])
+def no_results(search):
+    form = SearchCardForm()
+    if form.validate_on_submit():
+        new_search = form.search.data.capitalize()
+        cards = Card.query.filter_by(name=search).all()
+        if cards == []:
+            return redirect(url_for('main.no_results', cards=cards, form=form, search=new_search))
+        return redirect(url_for('main.search_results', cards=cards, search=new_search))
+    message = f'Your search "{search}" yielded no results. Try again.'
+    return render_template('no_results.html', form=form, message=message)
