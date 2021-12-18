@@ -2420,6 +2420,12 @@ div.collection-title{
   margin-left: 115px
 }
 
+div.sign-in{
+  text-decoration: none;
+  color:blue;
+  font-weight:600;
+}
+
 div.card-content{
   border-width: 10px;
   margin-top: 25px;
@@ -2434,6 +2440,27 @@ div.card-title{
 
 div.card-description{
   padding: 3px;
+}
+
+div.show-message{
+  border-width: 10px;
+  margin-top: 100px;
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+/* div.form-group{
+  background-color: black
+} */
+
+.btn-default {
+  background-color: white;
+}
+
+div.search-cards{
+  border-width: 10px;
+  margin-left: 150px;
+  margin-right: 150px;
 }
 
 .text-container {
