@@ -117,6 +117,7 @@ class User(UserMixin, db.Model):
         return followed.union(own).order_by(Card.id.asc())
 
 class Card(db.Model):
+    __searchable__ = ['name', 'set_name', 'set_series']
     id = db.Column(db.Integer, primary_key=True)
     card_id = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
