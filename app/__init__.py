@@ -1,5 +1,4 @@
 from flask import Flask
-import sqlalchemy
 from config import config
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -13,6 +12,7 @@ login = LoginManager()
 login.login_view = 'auth.login'
 moment = Moment()
 mail = Mail()
+
 
 def create_app(config_name='default'):
     app = Flask(__name__)
