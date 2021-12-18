@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {{ super() }}
 <!DOCTYPE html>
@@ -17,7 +18,8 @@
                         {% endif %}
                     </h1>
                     <h2 class="masthead-subheading mb-0">Will Rock Your Socks Off</h2>
-                    <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#scroll">Learn More</a>
+                    {{ wtf.quick_form(form) }}
+                    <!-- <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#scroll">Learn More</a> -->
                 </div>
             </div>
 

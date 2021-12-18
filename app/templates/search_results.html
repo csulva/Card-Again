@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+{{ super() }}
+<div class='show-message'>
+<h1>{{ message }}</h1>
+</div>
+{% include '_cards.html' %}
+{% endblock content %}

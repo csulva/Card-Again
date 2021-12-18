@@ -30,14 +30,20 @@
                 {{ composition.description }}
                 {% endif %}
             </div> #}
+            {% if current_user.is_anonymous %}
+            <div class='sign-in'>
+            <p><a href="{{ url_for('auth.login')}}">Sign in to add to your collection</a></p>
+            </div>
+            {% elif not card in current_user.cards %}
         </div>
     </li>
-    {% if not card in current_user.cards %}
+
     <div>
         <a class="btn btn-block" style="background-color:white; float: right" href="{{ url_for('main.add', card_id=card.card_id) }}">
             Add to My Collection
         </a>
     </div>
+    <br>
     {% endif %}
     {% endfor %}
 </ul>
