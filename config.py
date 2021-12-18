@@ -21,6 +21,8 @@ class Config:
     CARDAGAIN_COMPS_PER_PAGE = 20
     CARDAGAIN_FOLLOWERS_PER_PAGE = 20
 
+    # WHOOSH_BASE = 'whoosh'
+
     HTTPS_REDIRECT = False
 
     @staticmethod
