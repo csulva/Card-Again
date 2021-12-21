@@ -15,6 +15,9 @@ def index():
     if form.validate_on_submit():
         search = form.search.data.capitalize()
         cards = Card.query.filter_by(name=search).all()
+        if search == '':
+            flash('Please enter a search...')
+            return redirect(url_for('main.no_results', form=form, search=' '))
         if cards == []:
             return redirect(url_for('main.no_results', cards=cards, search=search))
         return redirect(url_for('main.search_results', search=search))
@@ -29,7 +32,8 @@ def test():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user, cards=user.cards, getattr=getattr)
+    cards = user.cards.order_by(Card.pokedex_number.asc())
+    return render_template('user.html', user=user, cards=cards, getattr=getattr)
 
 @main.before_request
 def before_request():
@@ -119,6 +123,9 @@ def no_results(search):
     if form.validate_on_submit():
         new_search = form.search.data.capitalize()
         cards = Card.query.filter_by(name=search).all()
+        if new_search == '':
+            flash('Please enter a search...')
+            return redirect(url_for('main.no_results', form=form, search=search))
         if cards == []:
             return redirect(url_for('main.no_results', cards=cards, form=form, search=new_search))
         return redirect(url_for('main.search_results', cards=cards, search=new_search))
