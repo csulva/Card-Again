@@ -238,6 +238,10 @@ class Card(db.Model):
         Card.generate_slug()
         db.session.commit()
 
+    @staticmethod
+    def update_cards(self):
+        pass
+
 
 @login.user_loader
 def load_user(id):
