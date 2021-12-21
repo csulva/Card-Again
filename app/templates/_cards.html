@@ -16,9 +16,32 @@
 
 
             <div class="card-title">
-               <h1><a href="{{ url_for('main.card', slug=card.slug) }}">{{ card.name }}</a></h1>
+                <h1><a href="{{ url_for('main.card', slug=card.slug) }}">{{ card.name }}</a></h1>
+                <h5>Set Name: <i>{{card.set_name}}</i> &nbsp;&nbsp; Set Series: <i>{{card.set_series}}</i></h5>
+                <h5>Rarity: <i>{{card.rarity}}</i></h5>
+                <div>
+                {% if card.normal_price_market %}
+                Normal Market Price: ${{card.normal_price_market|round(2, 'common')}}
+                {% endif %}
+                </div>
+                <div>
                 {% if card.holofoil_price_market %}
-                Holofoil Market Price: {{card.holofoil_price_market}}
+                <span title="Foil effect in the card's picture">Holofoil</span> Market Price: ${{card.holofoil_price_market|round(2, 'common')}}
+                {% endif %}
+                </div>
+                <div>
+                {% if card.reverse_holofoil_price_market %}
+                <span title='Foil effect on every part of the card except the illustration'>Reverse Holofoil</span> Market Price: ${{card.reverse_holofoil_price_market|round(2, 'common')}}
+                {% endif %}
+                </div>
+                <br>
+                <div>
+                Price Last Updated: {{card.last_updated}}
+                </div>
+                {% if card.url %}
+                <div class='buy-sell'>
+                <a href="{{card.url}}">Buy/Sell</a>
+                </div>
                 {% endif %}
             </div>
 
