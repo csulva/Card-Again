@@ -13,14 +13,25 @@ from ..decorators import permission_required
 def index():
     form = SearchCardForm()
     if form.validate_on_submit():
-        search = form.search.data.capitalize()
-        cards = Card.query.filter_by(name=search).all()
-        if search == '':
+        search = form.search.data.title()
+        if Card.query.filter_by(name=search).all():
+            cards = Card.query.filter_by(name=search).all()
+            if cards == []:
+                return redirect(url_for('main.no_results', cards=cards, search=search))
+            return redirect(url_for('main.search_results', search=search))
+        elif Card.query.filter_by(set_name=search).all():
+            cards = Card.query.filter_by(set_name=search).all()
+            if cards == []:
+                return redirect(url_for('main.no_results', cards=cards, search=search))
+            return redirect(url_for('main.search_results', search=search))
+        elif Card.query.filter_by(set_series=search).all():
+            cards = Card.query.filter_by(self_series=search).all()
+            if cards == []:
+                return redirect(url_for('main.no_results', cards=cards, search=search))
+            return redirect(url_for('main.search_results', search=search))
+        elif search == '':
             flash('Please enter a search...')
             return redirect(url_for('main.no_results', form=form, search=' '))
-        if cards == []:
-            return redirect(url_for('main.no_results', cards=cards, search=search))
-        return redirect(url_for('main.search_results', search=search))
     return render_template('index.html', user=current_user, form=form)
 
 @main.route('/test')
@@ -113,6 +124,7 @@ def add(card_id):
 
 @main.route('/search_results/<search>')
 def search_results(search):
+    # ADD POSSIBILITIES FOR SET_NAME AND SET_SERIES
     cards = Card.query.filter_by(name=search).all()
     message = f'{len(cards)} Results for "{search}"'
     return render_template('search_results.html', message=message, cards=cards, search=search)
@@ -122,7 +134,7 @@ def no_results(search):
     form = SearchCardForm()
     if form.validate_on_submit():
         new_search = form.search.data.capitalize()
-        cards = Card.query.filter_by(name=search).all()
+        cards = Card.query.filter_by(name=new_search).all()
         if new_search == '':
             flash('Please enter a search...')
             return redirect(url_for('main.no_results', form=form, search=search))
