@@ -2436,6 +2436,12 @@ div.card-content{
 div.card-title{
   font-weight: bold;
   padding: 2px;
+  display: block;
+}
+
+div.buy-sell {
+  position: absolute;
+  bottom: 10px;
 }
 
 div.card-description{
@@ -2448,6 +2454,8 @@ div.show-message{
   margin-left: 150px;
   margin-right: 150px;
 }
+
+
 
 /* div.form-group{
   background-color: black
