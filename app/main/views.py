@@ -44,7 +44,7 @@ def user(username):
     # card_list = user.cards.order_by(Card.pokedex_number.asc()).all()
     # pagination = card_list.paginate(
     #         page,
-    #         per_page=current_app.config['CARDAGAIN_COMPS_PER_PAGE'],
+    #         per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
     #         error_out=False)
     # cards = pagination.items
     cards = user.cards.order_by(Card.pokedex_number.asc()).all()
