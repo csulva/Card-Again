@@ -17,12 +17,14 @@
         Follow
     </a>
     {% endif %}
-    {# <button type="button" class="btn btn-light">
+    <br>
+    <br>
+    <button type="button" class="btn btn-light">
        <a href="{{ url_for('.following', username=user.username) }}">Following</a> <span class="badge badge-light">{{user.following.count() - 1}}</span>
       </button>
     <button type="button" class="btn btn-light">
         <a href="{{ url_for('.followers', username=user.username) }}">Followers</a> <span class="badge badge-light">{{user.followers.count() - 1}}</span>
-       </button> #}
+       </button>
     <br>
     <table class="table" style="color: white">
         <tbody>
