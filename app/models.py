@@ -9,10 +9,12 @@ import json
 import re
 
 
-followers = db.Table('followers',
-    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
-)
+class Follow(db.Model):
+    __tablename__ = 'follows'
+
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    following_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 collections = db.Table('collections',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -33,11 +35,22 @@ class User(UserMixin, db.Model):
 
     cards = db.relationship('Card', secondary=collections, backref='owner', lazy='dynamic')
 
-    followed = db.relationship(
-        'User', secondary=followers,
-        primaryjoin=(followers.c.follower_id == id),
-        secondaryjoin=(followers.c.followed_id == id),
-        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+    # followed = db.relationship(
+    #     'User', secondary=followers,
+    #     primaryjoin=(followers.c.follower_id == id),
+    #     secondaryjoin=(followers.c.followed_id == id),
+    #     backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+
+    following = db.relationship('Follow',
+                foreign_keys=[Follow.follower_id],
+                backref=db.backref('follower', lazy='joined'),
+                lazy='dynamic',
+                cascade='all, delete-orphan')
+    followers = db.relationship('Follow',
+                foreign_keys=[Follow.following_id],
+                backref=db.backref('following', lazy='joined'),
+                lazy='dynamic',
+                cascade='all, delete-orphan')
 
     def __repr__(self) -> str:
         return '<User {}>'.format(self.username)
@@ -98,23 +111,34 @@ class User(UserMixin, db.Model):
 
     def follow(self, user):
         if not self.is_following(user):
-            self.followed.append(user)
+            f = Follow(follower=self, following=user)
+            db.session.add(f)
 
     def unfollow(self, user):
-        if self.is_following(user):
-            self.followed.remove(user)
+        f = self.following.filter_by(following_id=user.id).first()
+        if f:
+            db.session.delete(f)
 
     def is_following(self, user):
-        return self.followed.filter(
-            followers.c.followed_id == user.id).count() > 0
+        if user.id is None:
+            return False
+        return self.following.filter_by(following_id=user.id).first() is not None
 
-    # get followers' collections
-    def followed_card_collections(self):
-        followed = Card.query.join(
-            followers, (followers.c.followed_id == Card.user_id)).filter(
-                followers.c.follower_id == self.id)
-        own = Card.query.filter_by(user_id=self.id)
-        return followed.union(own).order_by(Card.id.asc())
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+                db.session.commit()
+
+    # # get followers' collections
+    # def followed_card_collections(self):
+    #     followed = Card.query.join(
+    #         followers, (followers.c.followed_id == Card.user_id)).filter(
+    #             followers.c.follower_id == self.id)
+    #     own = Card.query.filter_by(user_id=self.id)
+    #     return followed.union(own).order_by(Card.id.asc())
 
 class Card(db.Model):
     __searchable__ = ['name', 'set_name', 'set_series']
