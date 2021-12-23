@@ -3,12 +3,6 @@
 
 {% block content %}
 <div class="text-container">
-    {% for msg in get_flashed_messages() %}
-        <div class="alert alert-warning">
-            <button type="button" class="done" data-dismiss="alert">&times;</button>
-            {{ msg }}
-        </div>
-    {% endfor %}
 
 <h2>Welcome to Card Again, {{ user.username }}!</h2>
 <p>We would love for you to join our community,
@@ -16,5 +10,5 @@
 
     <p>Please check your inbox for an email with a confirmation link.</p>
     <p>If you need a new one, no problem. <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a> and we'll send you a new one.</p>
-
+</div>
 {% endblock content %}
