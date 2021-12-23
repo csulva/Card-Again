@@ -3,7 +3,7 @@ from flask_login.utils import login_required
 from app import db
 from app.main.forms import EditProfileForm, SearchCardForm
 from . import main
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, current_app
 from flask_login import current_user
 from app.models import User, Card, Permission
 from datetime import datetime
@@ -40,7 +40,14 @@ def test():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    cards = user.cards.order_by(Card.pokedex_number.asc())
+    page = request.args.get('page', 1, type=int)
+    # card_list = user.cards.order_by(Card.pokedex_number.asc()).all()
+    # pagination = card_list.paginate(
+    #         page,
+    #         per_page=current_app.config['CARDAGAIN_COMPS_PER_PAGE'],
+    #         error_out=False)
+    # cards = pagination.items
+    cards = user.cards.order_by(Card.pokedex_number.asc()).all()
     return render_template('user.html', user=user, cards=cards, getattr=getattr)
 
 @main.before_request
@@ -123,7 +130,7 @@ def add(card_id):
 def search_results(search):
     # ADD POSSIBILITIES FOR SET_NAME AND SET_SERIES
     if Card.query.filter_by(name=search).all():
-        cards = Card.query.filter_by(name=search).all().order_by(Card.pokedex_number.asc()).all()
+        cards = Card.query.filter_by(name=search).order_by(Card.pokedex_number.asc()).all()
     elif Card.query.filter_by(set_name=search).all():
         cards = Card.query.filter_by(set_name=search).order_by(Card.pokedex_number.asc()).all()
     elif Card.query.filter_by(set_series=search).all():
@@ -153,3 +160,4 @@ def no_results(search):
             return redirect(url_for('main.no_results', cards=cards, form=form, search=new_search))
     message = f'Your search "{search}" yielded no results. Try again.'
     return render_template('no_results.html', form=form, message=message)
+
