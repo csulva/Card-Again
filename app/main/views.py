@@ -128,7 +128,6 @@ def add(card_id):
 
 @main.route('/search_results/<search>')
 def search_results(search):
-    # ADD POSSIBILITIES FOR SET_NAME AND SET_SERIES
     if Card.query.filter_by(name=search).all():
         cards = Card.query.filter_by(name=search).order_by(Card.pokedex_number.asc()).all()
     elif Card.query.filter_by(set_name=search).all():
@@ -161,3 +160,44 @@ def no_results(search):
     message = f'Your search "{search}" yielded no results. Try again.'
     return render_template('no_results.html', form=form, message=message)
 
+@main.route('/followers/<username>')
+def followers(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash("That is not a valid user.")
+        return redirect(url_for('.index'))
+    page = request.args.get('page', 1, type=int)
+    pagination = user.followers.paginate(
+        page,
+        per_page=current_app.config['CARDAGAIN_FOLLOWERS_PER_PAGE'],
+        error_out=False)
+    # convert to only follower and timestamp
+    follows = [{'user': item.follower, 'timestamp': item.timestamp}
+               for item in pagination.items]
+    return render_template('followers.html',
+                           user=user,
+                           title_text="Followers of",
+                           endpoint='.followers',
+                           pagination=pagination,
+                           follows=follows)
+
+@main.route('/following/<username>')
+def following(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash("That is not a valid user.")
+        return redirect(url_for('.index'))
+    page = request.args.get('page', 1, type=int)
+    pagination = user.following.paginate(
+        page,
+        per_page=current_app.config['CARDAGAIN_FOLLOWERS_PER_PAGE'],
+        error_out=False)
+    # convert to only follower and timestamp
+    follows = [{'user': item.following, 'timestamp': item.timestamp}
+               for item in pagination.items]
+    return render_template('following.html',
+                           user=user,
+                           title_text="Following",
+                           endpoint='.following',
+                           pagination=pagination,
+                           follows=follows)
