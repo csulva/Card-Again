@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{{ super() }}
+{% block content %}
+<div class="title">
+<h1>{{title_text}} {{user.username}}</h1>
+</div>
+<br>
+<ul class='followers'>
+    {% for f in user.followers.all() %}
+
+    {% if f.follower.id == user.id %}
+    {% else %}
+    <br>
+    <li class='followers'>
+
+    <div class='user-thumbnail'>
+        <img class="img-rounded" src="{{ f.follower.avatar(size=135) }}">
+    </div>
+    <div class='user-content'>
+        <h1>Username: <a href="{{ url_for('main.user', username=f.follower.username) }}">{{f.follower.username}}</a></h1>
+        <br>
+        <h4>Last Seen: <i>{{ moment(f.timestamp).fromNow() }}</i></h4>
+    </div>
+    </li>
+
+    {% endif %}
+    {% endfor %}
+</ul>
+
+{% endblock content %}
