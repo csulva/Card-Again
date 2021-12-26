@@ -126,6 +126,24 @@ def add(card_id):
     flash(f"You have added the card to your collection.")
     return redirect(url_for('.user', username=current_user.username, card_id=card.card_id))
 
+# REMOVE CARD
+
+# @main.route('/remove/<card_id>')
+# @login_required
+# @permission_required(Permission.FOLLOW)
+# def remove(card_id):
+#     card = Card.query.filter_by(card_id=card_id).first()
+#     if card is None:
+#         flash("That is not a valid card.")
+#         return redirect(url_for('.index'))
+#     if card in current_user.cards:
+#         flash("Looks like you are already have that card in your collection.")
+#         return redirect(url_for('.card', slug=card.slug))
+#     current_user.cards.append(card)
+#     db.session.commit()
+#     flash(f"You have added the card to your collection.")
+#     return redirect(url_for('.user', username=current_user.username, card_id=card.card_id))
+
 @main.route('/search_results/<search>')
 def search_results(search):
     if Card.query.filter_by(name=search).all():
