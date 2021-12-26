@@ -57,10 +57,12 @@
     </li>
     </div>
     {% if current_user.is_anonymous %}
+    <div>
         <a class='btn btn-block' style='background-color:white; float: right'
     href="{{ url_for('auth.login')}}">Sign in to add to your collection</a>
-    {% elif not card in current_user.cards %}
+    </div>
     <br>
+    {% elif not card in current_user.cards %}
 
     <div>
         <a class="btn btn-block" style="background-color:white; float: right" href="{{ url_for('main.add', card_id=card.card_id) }}">
