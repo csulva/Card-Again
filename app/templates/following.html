@@ -7,7 +7,7 @@
     <br>
     <ul class='followers'>
         {% for f in user.following.all() %}
-    
+
         {% if f.following.id == user.id %}
         {% else %}
         <br>
