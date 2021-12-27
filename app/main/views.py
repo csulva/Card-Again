@@ -1,7 +1,7 @@
 from re import M
 from flask_login.utils import login_required
 from app import db
-from app.main.forms import EditProfileForm, SearchCardForm
+from app.main.forms import EditProfileForm, SearchCardForm, SearchUserForm
 from . import main
 from flask import render_template, url_for, flash, redirect, request, current_app
 from flask_login import current_user
@@ -29,6 +29,17 @@ def index():
         else:
             cards = []
             return redirect(url_for('main.no_results', cards=cards, search=search))
+    user_form = SearchUserForm()
+    if user_form.validate_on_submit():
+        search = user_form.search.data
+        if search == '':
+            flash('Please enter a valid search...')
+            return redirect(url_for('main.no_user_results', search=' '))
+        elif User.query.filter_by(username=search).all():
+            return redirect(url_for('main.search_user', search=search))
+        else:
+            search == []
+            return redirect(url_for('main.no_user_results', search=search))
     return render_template('index.html', user=current_user, form=form)
 
 @main.route('/test')
@@ -126,8 +137,6 @@ def add(card_id):
     flash(f"You have added the card to your collection.")
     return redirect(url_for('.user', username=current_user.username, card_id=card.card_id))
 
-# REMOVE CARD
-
 @main.route('/remove/<card_id>')
 @login_required
 @permission_required(Permission.FOLLOW)
@@ -144,6 +153,7 @@ def remove(card_id):
     flash(f"You have successfully removed the card from your collection.")
     return redirect(url_for('.user', username=current_user.username, card_id=card.card_id))
 
+# message declared before assignment - fix this
 @main.route('/search_results/<search>')
 def search_results(search):
     if Card.query.filter_by(name=search).all():
@@ -219,3 +229,25 @@ def following(username):
                            endpoint='.following',
                            pagination=pagination,
                            follows=follows)
+
+@main.route('/search_user/<search>')
+def search_user(search):
+    users = User.query.filter_by(username=search).all()
+    message = f'{len(users)} Results for "{search}"'
+    return render_template('search_user.html', message=message, users=users, search=search)
+
+@main.route('/no_user_results/<search>', methods=['GET', 'POST'])
+def no_user_results(search):
+    form = SearchUserForm()
+    if form.validate_on_submit():
+        search = form.search.data
+        if search == '':
+            flash('Please enter a valid search...')
+            return redirect(url_for('main.no_user_results', search=' '))
+        elif User.query.filter_by(username=search).all():
+            return redirect(url_for('main.search_user', search=search))
+        else:
+            search == []
+            return redirect(url_for('main.no_user_results', search=search))
+    message = f'Your search "{search}" yielded no results. Try again.'
+    return render_template('no_user_results.html', form=form, message=message)
