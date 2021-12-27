@@ -70,6 +70,16 @@
         </a>
     </div>
     <br>
+
+    {% elif card in current_user.cards %}
+
+    <div>
+        <a class="btn btn-block" style="background-color:white; float: right" href="{{ url_for('main.remove', card_id=card.card_id) }}">
+            Remove from My Collection
+        </a>
+    </div>
+    <br>
+
     {% endif %}
     {% endfor %}
 </ul>
