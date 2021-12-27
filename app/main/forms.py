@@ -12,3 +12,7 @@ class EditProfileForm(FlaskForm):
 class SearchCardForm(FlaskForm):
     search = SearchField('Search for cards...')
     submit = SubmitField('Submit')
+
+class SearchUserForm(FlaskForm):
+    search = SearchField('Search for a User...')
+    submit = SubmitField('Submit')
