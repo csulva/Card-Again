@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{{ super() }}
+{% block content %}
+
+<div class="title">
+    <h1>{{message}}</h1>
+    </div>
+
+    <ul class='followers'>
+        {% for f in users %}
+        <br>
+        <li class='followers'>
+    
+        <div class='user-thumbnail'>
+            <img class="img-rounded" src="{{ f.avatar(size=135) }}">
+        </div>
+        <div class='user-content'>
+            <h1>Username: <a href="{{ url_for('main.user', username=f.username) }}">{{f.username}}</a></h1>
+            <br>
+            <h4>Last Seen: <i>{{ moment(f.last_seen).fromNow() }}</i></h4>
+        </div>
+        </li>
+
+        {% endfor %}
+    </ul>
+    {% endblock content %}

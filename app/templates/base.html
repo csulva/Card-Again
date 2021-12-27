@@ -1,3 +1,6 @@
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
 <!doctype html>
 <html>
     {% block head %}
@@ -36,6 +39,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
+                        {#{{ wtf.quick_form(user_form)}}#}
                         {% if current_user.is_anonymous %}
                         <li class="nav-item"><a class="nav-link" href="{{url_for('auth.register')}}">Sign Up</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{url_for('auth.login')}}">Log In</a></li>
