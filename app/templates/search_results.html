@@ -7,4 +7,14 @@
 <h1>{{ message }}</h1>
 </div>
 {% include '_cards.html' %}
+<div class='pagination-text'>
+    <h5>{{length_per_page}}</h5>
+{% if prev_url %}
+<a href="{{ prev_url }}">Previous Page</a>
+{% endif %}
+{% if next_url %}
+<a href="{{ next_url }}">Next Page</a>
+{% endif %}
+</div>
+<br>
 {% endblock content %}
