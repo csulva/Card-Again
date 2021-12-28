@@ -2520,6 +2520,12 @@ li.followers {
   margin-right: 85px;
 }
 
+div.pagination-text {
+  margin-left: 160px;
+  margin-right: 160px;
+  color: white
+}
+
 div.user-thumbnail {
   position: absolute;
   padding: 5px;
