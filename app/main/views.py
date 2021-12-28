@@ -9,19 +9,17 @@ from app.models import User, Card, Permission
 from datetime import datetime
 from ..decorators import permission_required
 
+
 @main.route('/', methods=["GET", "POST"])
 def index():
     form = SearchCardForm()
     if form.validate_on_submit():
-        search = form.search.data.title()
-        if Card.query.filter_by(name=search).all():
-            cards = Card.query.filter_by(name=search).all()
+        search = form.search.data
+        if Card.query.filter_by(name=search.title()).all():
+            cards = Card.query.filter_by(name=search.title()).all()
             return redirect(url_for('main.search_results', search=search))
         elif Card.query.filter_by(set_name=search).all():
             cards = Card.query.filter_by(set_name=search).all()
-            return redirect(url_for('main.search_results', search=search))
-        elif Card.query.filter_by(set_series=search).all():
-            cards = Card.query.filter_by(self_series=search).all()
             return redirect(url_for('main.search_results', search=search))
         elif search == '':
             flash('Please enter a search...')
@@ -29,18 +27,11 @@ def index():
         else:
             cards = []
             return redirect(url_for('main.no_results', cards=cards, search=search))
-    user_form = SearchUserForm()
-    if user_form.validate_on_submit():
-        search = user_form.search.data
-        if search == '':
-            flash('Please enter a valid search...')
-            return redirect(url_for('main.no_user_results', search=' '))
-        elif User.query.filter_by(username=search).all():
-            return redirect(url_for('main.search_user', search=search))
-        else:
-            search == []
-            return redirect(url_for('main.no_user_results', search=search))
-    return render_template('index.html', user=current_user, form=form)
+    pokemon = Card.query.all()
+    pokemon_names = set()
+    for names in pokemon:
+        pokemon_names.add(names.name)
+    return render_template('index.html', user=current_user, form=form, pokemon_names=pokemon_names)
 
 @main.route('/test')
 @login_required
@@ -153,34 +144,41 @@ def remove(card_id):
     flash(f"You have successfully removed the card from your collection.")
     return redirect(url_for('.user', username=current_user.username, card_id=card.card_id))
 
-# message declared before assignment - fix this
 @main.route('/search_results/<search>')
 def search_results(search):
-    if Card.query.filter_by(name=search).all():
-        cards = Card.query.filter_by(name=search).order_by(Card.pokedex_number.asc()).all()
+    page = request.args.get('page', 1, type=int)
+    if Card.query.filter_by(name=search.title()).all():
+        length = len(Card.query.filter_by(name=search.title()).all())
+        cards = Card.query.filter_by(name=search.title()).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
+            error_out=False)
     elif Card.query.filter_by(set_name=search).all():
-        cards = Card.query.filter_by(set_name=search).order_by(Card.pokedex_number.asc()).all()
-    elif Card.query.filter_by(set_series=search).all():
-        cards = Card.query.filter_by(set_name=search).order_by(Card.pokedex_number.asc()).all()
-    message = f'{len(cards)} Results for "{search}"'
-    return render_template('search_results.html', message=message, cards=cards, search=search)
+        length = len(Card.query.filter_by(set_name=search).all())
+        cards = Card.query.filter_by(set_name=search).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
+            error_out=False)
+
+    next_url = url_for('main.search_results', search=search, page=cards.next_num) \
+        if cards.has_next else None
+    prev_url = url_for('main.search_results', search=search, page=cards.prev_num) \
+        if cards.has_prev else None
+
+    message = f'{length} Results for "{search}"'
+    length_per_page = f'{len(cards.items)} Cards Listed on this Page'
+    return render_template('search_results.html', message=message, cards=cards.items, search=search, next_url=next_url, prev_url=prev_url, length_per_page=length_per_page)
 
 @main.route('/no_results/<search>', methods=['GET', 'POST'])
 def no_results(search):
     form = SearchCardForm()
     if form.validate_on_submit():
-        new_search = form.search.data.title()
+        new_search = form.search.data
         if new_search == '':
             flash('Please enter a search...')
-            return redirect(url_for('main.no_results', form=form, search=new_search))
-        if Card.query.filter_by(name=new_search).all():
-            cards = Card.query.filter_by(name=new_search).all()
+            message = f'Your search "{new_search} " yielded no results. Try again.'
+            return render_template('no_results.html', form=form, search=new_search, message=message)
+        if Card.query.filter_by(name=new_search.title()).all():
+            cards = Card.query.filter_by(name=new_search.title()).all()
             return redirect(url_for('main.search_results', search=new_search))
         elif Card.query.filter_by(set_name=new_search).all():
             cards = Card.query.filter_by(set_name=new_search).all()
-            return redirect(url_for('main.search_results', search=new_search))
-        elif Card.query.filter_by(set_series=new_search).all():
-            cards = Card.query.filter_by(self_series=new_search).all()
             return redirect(url_for('main.search_results', search=new_search))
         else:
             cards = []
@@ -230,9 +228,30 @@ def following(username):
                            pagination=pagination,
                            follows=follows)
 
+# Render search user form
+@main.route('/search_users', methods=['GET', 'POST'])
+@login_required
+def search_users():
+    form = SearchUserForm()
+    if form.validate_on_submit():
+        search = form.search.data
+        if search == '':
+            flash('Please enter a valid search...')
+            return redirect(url_for('main.no_user_results', search=' '))
+        elif User.query.filter_by(username=search).all():
+            return redirect(url_for('main.search_user', search=search))
+        else:
+            search == []
+            return redirect(url_for('main.no_user_results', search=search))
+    message = 'Search Users'
+    return render_template('search_users.html', form=form, message=message)
+
+# Show searched user results
 @main.route('/search_user/<search>')
 def search_user(search):
     users = User.query.filter_by(username=search).all()
+    if users == []:
+        return redirect(url_for('main.no_user_results', search=search))
     message = f'{len(users)} Results for "{search}"'
     return render_template('search_user.html', message=message, users=users, search=search)
 
