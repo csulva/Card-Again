@@ -2326,6 +2326,10 @@ progress {
   margin-right: 150px;
 }
 
+div.hidden-text{
+  float: right;
+}
+
 .form-profile {
   color: black;
   background-color: white;
@@ -11563,16 +11567,17 @@ header.masthead {
   background-position: center center;
   background-attachment: scroll;
   background-size: cover;
+  margin-top: -4%;
 }
 header.masthead .masthead-content {
   z-index: 1;
   position: relative;
 }
 header.masthead .masthead-content .masthead-heading {
-  font-size: 4rem;
+  font-size: 2rem;
 }
 header.masthead .masthead-content .masthead-subheading {
-  font-size: 2rem;
+  font-size: 1rem;
 }
 header.masthead .bg-circle {
   z-index: 0;
