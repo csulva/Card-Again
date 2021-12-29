@@ -9,6 +9,7 @@ from app.models import User, Card, Permission
 from datetime import datetime
 from ..decorators import permission_required
 
+set_names = ['Celebrations', 'Next Destinies', 'Skyridge', "McDonald's Collection 2021", 'HS—Triumphant', 'Crystal Guardians', 'Noble Victories', 'Base', 'Secret Wonders', 'Deoxys', 'XY Black Star Promos', 'Vivid Voltage', 'Evolving Skies', 'Forbidden Light', 'BREAKpoint', 'Celestial Storm', 'Plasma Storm', 'Legends Awakened', 'Ancient Origins', 'Emerging Powers', 'Pokémon Futsal Collection', 'Legend Maker', 'FireRed & LeafGreen', 'POP Series 4', 'Jungle', 'Furious Fists', 'Dragons Exalted', "McDonald's Collection 2018", "McDonald's Collection 2019", 'Team Up', 'POP Series 2', 'Base Set 2', 'Gym Challenge', 'Shining Legends', 'Lost Thunder', 'Sun & Moon', 'Best of Game', 'Legendary Collection', 'POP Series 8', 'Sword & Shield', 'POP Series 9', 'Ruby & Sapphire', 'Roaring Skies', 'HS—Undaunted', 'Unified Minds', 'Fossil', 'POP Series 3', 'Arceus', "McDonald's Collection 2017", 'Evolutions', 'HGSS Black Star Promos', 'Hidden Legends', 'Team Magma vs Team Aqua', 'POP Series 1', 'Plasma Freeze', 'Holon Phantoms', 'SM Black Star Promos', 'BW Black Star Promos', 'Dragon Majesty', 'Fusion Strike', 'Emerald', 'Burning Shadows', 'Nintendo Black Star Promos', 'Rising Rivals', 'Phantom Forces', 'Team Rocket', 'Dragon', 'Neo Genesis', 'Plasma Blast', 'Call of Legends', 'Platinum', "McDonald's Collection 2015", 'POP Series 7', 'Kalos Starter Set', 'Cosmic Eclipse', 'Southern Islands', 'Dragon Frontiers', 'DP Black Star Promos', 'Ultra Prism', 'Sandstorm', 'Pokémon Rumble', 'Detective Pikachu', 'Supreme Victors', 'Flashfire', 'SWSH Black Star Promos', 'Dragon Vault', "McDonald's Collection 2016", 'Neo Discovery', 'Celebrations: Classic Collection', 'Fates Collide', 'Double Crisis', 'Mysterious Treasures', 'Shiny Vault', "McDonald's Collection 2011", 'XY', 'Black & White', 'Great Encounters', 'Crimson Invasion', 'POP Series 6', 'Majestic Dawn', "McDonald's Collection 2014", 'Chilling Reign', 'Expedition Base Set', 'Steam Siege', 'Wizards Black Star Promos', 'Legendary Treasures', 'Power Keepers', 'Diamond & Pearl', 'BREAKthrough', 'Guardians Rising', 'Boundaries Crossed', 'Gym Heroes', 'Aquapolis', 'Battle Styles', "Champion's Path", 'Shining Fates', 'Unbroken Bonds', 'Hidden Fates', 'Neo Revelation', 'Neo Destiny', 'Delta Species', 'Primal Clash', 'Darkness Ablaze', 'HeartGold & SoulSilver', 'Stormfront', 'Generations', 'POP Series 5', 'Dark Explorers', "McDonald's Collection 2012", 'Rebel Clash', 'HS—Unleashed', 'Unseen Forces', 'Team Rocket Returns']
 
 @main.route('/', methods=["GET", "POST"])
 def index():
@@ -18,39 +19,37 @@ def index():
         if Card.query.filter_by(name=search.title()).all():
             cards = Card.query.filter_by(name=search.title()).all()
             return redirect(url_for('main.search_results', search=search))
-        elif Card.query.filter_by(set_name=search).all():
-            cards = Card.query.filter_by(set_name=search).all()
-            return redirect(url_for('main.search_results', search=search))
         elif search == '':
             flash('Please enter a search...')
             return redirect(url_for('main.no_results', form=form, search=' '))
+        elif Card.query.filter(Card.name.contains(search)).all() == []:
+            return redirect(url_for('main.no_results', search=search))
+
+            # for set in set_names:
+            #     if search in set:
+            #         new_search = set
+            #         cards = Card.query.filter_by(set_name=new_search).all()
+            #         return redirect(url_for('main.search_results', search=search))
         else:
             cards = []
             return redirect(url_for('main.no_results', cards=cards, search=search))
-    pokemon = Card.query.all()
-    pokemon_names = set()
-    for names in pokemon:
-        pokemon_names.add(names.name)
-    return render_template('index.html', user=current_user, form=form, pokemon_names=pokemon_names)
+    return render_template('index.html', user=current_user, form=form)
 
-@main.route('/test')
-@login_required
-def test():
-    return render_template('test.html')
 
 @main.route('/user/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    # card_list = user.cards.order_by(Card.pokedex_number.asc()).all()
-    # pagination = card_list.paginate(
-    #         page,
-    #         per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
-    #         error_out=False)
-    # cards = pagination.items
-    cards = user.cards.order_by(Card.pokedex_number.asc()).all()
-    return render_template('user.html', user=user, cards=cards, getattr=getattr)
+    cards = user.cards.order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
+            error_out=False)
+
+    next_url = url_for('main.user', username=user.username, page=cards.next_num) \
+        if cards.has_next else None
+    prev_url = url_for('main.user', username=user.username, page=cards.prev_num) \
+        if cards.has_prev else None
+
+    return render_template('user.html', user=user, cards=cards.items, getattr=getattr, next_url=next_url, prev_url=prev_url)
 
 @main.before_request
 def before_request():
@@ -126,7 +125,7 @@ def add(card_id):
     current_user.cards.append(card)
     db.session.commit()
     flash(f"You have added the card to your collection.")
-    return redirect(url_for('.user', username=current_user.username, card_id=card.card_id))
+    return redirect(request.referrer)
 
 @main.route('/remove/<card_id>')
 @login_required
@@ -147,15 +146,28 @@ def remove(card_id):
 @main.route('/search_results/<search>')
 def search_results(search):
     page = request.args.get('page', 1, type=int)
-    if Card.query.filter_by(name=search.title()).all():
-        length = len(Card.query.filter_by(name=search.title()).all())
-        cards = Card.query.filter_by(name=search.title()).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
+    if Card.query.filter(Card.name.contains(search.title())).all():
+        length = len(Card.query.filter(Card.name.contains(search.title())).all())
+        cards = Card.query.filter(Card.name.contains(search.title())).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
             error_out=False)
-    elif Card.query.filter_by(set_name=search).all():
-        length = len(Card.query.filter_by(set_name=search).all())
-        cards = Card.query.filter_by(set_name=search).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
+    elif Card.query.filter(Card.set_name.contains(search)):
+        length = len(Card.query.filter(Card.set_name.contains(search)).all())
+        cards = Card.query.filter(Card.set_name.contains(search)).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
             error_out=False)
-
+    # elif search:
+    #     new_search = []
+    #     for set in set_names:
+    #         if search in set:
+    #             new_search.append(set)
+    #     new_cards = []
+    #     for new_set in new_search:
+    #         cards = Card.query.filter_by(set_name=new_set)
+    #         new_cards.append(cards)
+    #         length = len(new_cards)
+    #     for card in new_cards:
+    #         for new_card in card:
+    #             cards = Card.query.filter_by(name=new_card.name).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
+    #             error_out=False)
     next_url = url_for('main.search_results', search=search, page=cards.next_num) \
         if cards.has_next else None
     prev_url = url_for('main.search_results', search=search, page=cards.prev_num) \
