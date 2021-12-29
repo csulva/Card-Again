@@ -10,17 +10,19 @@
         <header class="masthead text-center text-white">
             <div class="masthead-content">
                 <div class="container px-5">
-                    <h1 class="masthead-heading mb-0">
+                    <h2 class="masthead-heading mb-0">
                         {% if not user.is_anonymous %}
                         Welcome, {{ user.username }}!
                         {% else %}
                         Welcome to Card Again!
                         {% endif %}
-                    </h1>
-                    <h2 class="masthead-subheading mb-0">Will Rock Your Socks Off</h2>
+                    </h2>
+                    <h3 class="masthead-subheading mb-0">Search for Thousands of Cards</h3>
                     <br>
                     <div class='form-search'>
-                    {{ wtf.quick_form(form) }}
+                     {{ wtf.quick_form(form)}}
+
+                    <!-- {{ wtf.quick_form(form) }} -->
                     {#<script>
                         $( function() {
                           var availableTags = [
@@ -39,4 +41,8 @@
             </div>
 
         </header>
+        <div class='hidden-text'>
+            <p>Data Provided by Pokémon TCG Developers API</p>
+        </div>
+
 {% endblock content %}
