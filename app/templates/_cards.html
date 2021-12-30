@@ -32,6 +32,8 @@
                 <div>
                 {% if card.reverse_holofoil_price_market %}
                 <span title='Foil effect on every part of the card except the illustration'>Reverse Holofoil</span> Market Price: ${{card.reverse_holofoil_price_market|round(2, 'common')}}
+                {% elif not card.normal_price_market and not card.holofoil_price_market and not card.reverse_holofoil_price_market %}
+                Market Price: No Data
                 {% endif %}
                 </div>
                 <br>
