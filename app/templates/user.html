@@ -57,7 +57,15 @@
 </div>
 <div class="collection-title">
 <h1>{{user.username}}'s Card Collection</h1>
+<p style='font-size: 18px'>Cards in Collection: {{ total_cards }}</p>
+<p style='font-size: 18px'>Collection Normal Market Price Total: ${{ total_normal_market_price|round(2, 'common')}} </p>
+<p style='font-size: 18px'>Collection Holofoil Market Price Total: ${{ total_holofoil|round(2, 'common')}} </p>
+<p style='font-size: 18px'>Collection Reverse Holofoil Market Price Total: ${{ total_reverse|round(2, 'common')}} </p>
+
 </div>
+
+{% include '_cards.html' %}
+
 <div class='pagination-text'>
     <h5>{{length_per_page}}</h5>
 {% if prev_url %}
@@ -68,6 +76,4 @@
 {% endif %}
 </div>
 <br>
-
-{% include '_cards.html' %}
 {% endblock content %}
