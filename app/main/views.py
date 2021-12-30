@@ -16,12 +16,13 @@ def index():
     form = SearchCardForm()
     if form.validate_on_submit():
         search = form.search.data
-        if Card.query.filter_by(name=search.title()).all():
-            cards = Card.query.filter_by(name=search.title()).all()
-            return redirect(url_for('main.search_results', search=search))
-        elif search == '':
+        if search == '' or search == ' ':
             flash('Please enter a search...')
             return redirect(url_for('main.no_results', form=form, search=' '))
+        elif Card.query.filter(Card.name.contains(search.title())).all():
+            return redirect(url_for('main.search_results', search=search))
+        elif Card.query.filter(Card.set_name.contains(search)).all():
+            return redirect(url_for('main.search_results', search=search))
         elif Card.query.filter(Card.name.contains(search)).all() == []:
             return redirect(url_for('main.no_results', search=search))
 
@@ -49,7 +50,19 @@ def user(username):
     prev_url = url_for('main.user', username=user.username, page=cards.prev_num) \
         if cards.has_prev else None
 
-    return render_template('user.html', user=user, cards=cards.items, getattr=getattr, next_url=next_url, prev_url=prev_url)
+    total_cards = len(user.cards.all())
+    total_normal_market_price = 0
+    total_holofoil = 0
+    total_reverse = 0
+    for card in user.cards:
+        if card.normal_price_market:
+            total_normal_market_price += card.normal_price_market
+        if card.holofoil_price_market:
+            total_holofoil += card.holofoil_price_market
+        if card.reverse_holofoil_price_market:
+            total_reverse += card.reverse_holofoil_price_market
+
+    return render_template('user.html', user=user, cards=cards.items, getattr=getattr, next_url=next_url, prev_url=prev_url, total_normal_market_price=total_normal_market_price, total_holofoil=total_holofoil, total_reverse=total_reverse, total_cards=total_cards)
 
 @main.before_request
 def before_request():
@@ -182,15 +195,13 @@ def no_results(search):
     form = SearchCardForm()
     if form.validate_on_submit():
         new_search = form.search.data
-        if new_search == '':
+        if new_search == '' or new_search == ' ':
             flash('Please enter a search...')
             message = f'Your search "{new_search} " yielded no results. Try again.'
             return render_template('no_results.html', form=form, search=new_search, message=message)
-        if Card.query.filter_by(name=new_search.title()).all():
-            cards = Card.query.filter_by(name=new_search.title()).all()
+        elif Card.query.filter(Card.name.contains(new_search)).all():
             return redirect(url_for('main.search_results', search=new_search))
-        elif Card.query.filter_by(set_name=new_search).all():
-            cards = Card.query.filter_by(set_name=new_search).all()
+        elif Card.query.filter(Card.set_name.contains(new_search)).all():
             return redirect(url_for('main.search_results', search=new_search))
         else:
             cards = []
@@ -247,7 +258,7 @@ def search_users():
     form = SearchUserForm()
     if form.validate_on_submit():
         search = form.search.data
-        if search == '':
+        if search == '' or search == ' ':
             flash('Please enter a valid search...')
             return redirect(url_for('main.no_user_results', search=' '))
         elif User.query.filter_by(username=search).all():
