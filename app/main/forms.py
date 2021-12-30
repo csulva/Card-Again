@@ -10,9 +10,9 @@ class EditProfileForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class SearchCardForm(FlaskForm):
-    search = SearchField('Search for cards...')
+    search = SearchField('Search for a card by "Pokemon" name or "Set" name...')
     submit = SubmitField('Submit')
 
 class SearchUserForm(FlaskForm):
-    search = SearchField('Search for a User...')
+    search = SearchField('Search for a User by their username...')
     submit = SubmitField('Submit')
