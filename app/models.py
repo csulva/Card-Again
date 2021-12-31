@@ -262,83 +262,84 @@ class Card(db.Model):
         db.session.commit()
 
     @staticmethod
-    def update_cards(card):
+    def update_cards():
         with open('API/card_data.json', 'r') as fin:
             data = json.load(fin)
 
         for dicts in data:
-            if card.card_id==dicts['id']:
-                card.card_id=dicts['id']
-                card.name=dicts['name']
-                card.rarity=dicts['rarity']
-                card.pokedex_number=dicts['pokedex_number']
-                card.image=dicts['image']
-                card.set_name=dicts['set_name']
-                card.set_series=dicts['set_series']
-                card.url=dicts['url']
-                card.last_updated=dicts['last_updated']
-                try:
-                    if dicts['price']['normal']['low']:
-                        card.normal_price_low = float(dicts['price']['normal']['low'])
-                except:
-                    card.normal_price_low=None
-                try:
-                    if dicts['price']['normal']['mid']:
-                        card.normal_price_mid = float(dicts['price']['normal']['mid'])
-                except:
-                    card.normal_price_mid=None
-                try:
-                    if dicts['price']['normal']['high']:
-                        card.normal_price_high = float(dicts['price']['normal']['high'])
-                except:
-                    card.normal_price_high=None
-                try:
-                    if dicts['price']['normal']['market']:
-                        card.normal_price_market = float(dicts['price']['normal']['market'])
-                except:
-                    card.normal_price_market=None
-                try:
-                    if dicts['price']['holofoil']['low']:
-                        card.holofoil_price_low = float(dicts['price']['holofoil']['low'])
-                except:
-                    card.holofoil_price_low=None
-                try:
-                    if dicts['price']['holofoil']['mid']:
-                        card.holofoil_price_mid = float(dicts['price']['holofoil']['mid'])
-                except:
-                    card.holofoil_price_mid=None
-                try:
-                    if dicts['price']['holofoil']['high']:
-                        card.holofoil_price_high = float(dicts['price']['holofoil']['high'])
-                except:
-                    card.holofoil_price_high=None
-                try:
-                    if dicts['price']['holofoil']['market']:
-                        card.holofoil_price_market = float(dicts['price']['holofoil']['market'])
-                except:
-                    card.holofoil_price_market=None
-                try:
-                    if dicts['price']['reverseHolofoil']['low']:
-                        card.reverse_holofoil_price_low = float(dicts['price']['reverseHolofoil']['low'])
-                except:
-                    card.reverse_holofoil_price_low=None
-                try:
-                    if dicts['price']['reverseHolofoil']['mid']:
-                        card.reverse_holofoil_price_mid = float(dicts['price']['reverseHolofoil']['mid'])
-                except:
-                    card.reverse_holofoil_price_mid=None
-                try:
-                    if dicts['price']['reverseHolofoil']['high']:
-                        card.reverse_holofoil_price_high = float(dicts['price']['reverseHolofoil']['high'])
-                except:
-                    card.reverse_holofoil_price_high=None
-                try:
-                    if dicts['price']['reverseHolofoil']['market']:
-                        card.reverse_holofoil_price_market = float(dicts['price']['reverseHolofoil']['market'])
-                except:
-                    card.reverse_holofoil_price_market=None
+            id = dicts['id']
+            card = Card.query.filter_by(card_id=id).first()
+            card.card_id=dicts['id']
+            card.name=dicts['name']
+            card.rarity=dicts['rarity']
+            card.pokedex_number=dicts['pokedex_number']
+            card.image=dicts['image']
+            card.set_name=dicts['set_name']
+            card.set_series=dicts['set_series']
+            card.url=dicts['url']
+            card.last_updated=dicts['last_updated']
+            try:
+                if dicts['price']['normal']['low']:
+                    card.normal_price_low = float(dicts['price']['normal']['low'])
+            except:
+                card.normal_price_low=None
+            try:
+                if dicts['price']['normal']['mid']:
+                    card.normal_price_mid = float(dicts['price']['normal']['mid'])
+            except:
+                card.normal_price_mid=None
+            try:
+                if dicts['price']['normal']['high']:
+                    card.normal_price_high = float(dicts['price']['normal']['high'])
+            except:
+                card.normal_price_high=None
+            try:
+                if dicts['price']['normal']['market']:
+                    card.normal_price_market = float(dicts['price']['normal']['market'])
+            except:
+                card.normal_price_market=None
+            try:
+                if dicts['price']['holofoil']['low']:
+                    card.holofoil_price_low = float(dicts['price']['holofoil']['low'])
+            except:
+                card.holofoil_price_low=None
+            try:
+                if dicts['price']['holofoil']['mid']:
+                    card.holofoil_price_mid = float(dicts['price']['holofoil']['mid'])
+            except:
+                card.holofoil_price_mid=None
+            try:
+                if dicts['price']['holofoil']['high']:
+                    card.holofoil_price_high = float(dicts['price']['holofoil']['high'])
+            except:
+                card.holofoil_price_high=None
+            try:
+                if dicts['price']['holofoil']['market']:
+                    card.holofoil_price_market = float(dicts['price']['holofoil']['market'])
+            except:
+                card.holofoil_price_market=None
+            try:
+                if dicts['price']['reverseHolofoil']['low']:
+                    card.reverse_holofoil_price_low = float(dicts['price']['reverseHolofoil']['low'])
+            except:
+                card.reverse_holofoil_price_low=None
+            try:
+                if dicts['price']['reverseHolofoil']['mid']:
+                    card.reverse_holofoil_price_mid = float(dicts['price']['reverseHolofoil']['mid'])
+            except:
+                card.reverse_holofoil_price_mid=None
+            try:
+                if dicts['price']['reverseHolofoil']['high']:
+                    card.reverse_holofoil_price_high = float(dicts['price']['reverseHolofoil']['high'])
+            except:
+                card.reverse_holofoil_price_high=None
+            try:
+                if dicts['price']['reverseHolofoil']['market']:
+                    card.reverse_holofoil_price_market = float(dicts['price']['reverseHolofoil']['market'])
+            except:
+                card.reverse_holofoil_price_market=None
 
-                db.session.add(card)
+            db.session.add(card)
         Card.generate_slug()
         db.session.commit()
 
