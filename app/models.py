@@ -77,7 +77,7 @@ class User(UserMixin, db.Model):
                 self.role = Role.query.filter_by(default=True).first()
         # if self.email is not None and self.avatar_hash is None:
         #     self.avatar_hash = self.email_hash()
-        # self.follow(self)
+        self.follow(self)
 
     def can(self, perm):
         return self.role is not None and self.role.has_permission(perm)
