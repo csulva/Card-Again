@@ -10,7 +10,7 @@
     {# link to all shown pages #}
     {% for p in pagination.iter_pages(1, 5, 5, 1) %}
         {% if p %}
-            <li {% if p = pagination.page %} class="active"{% endif %}>
+            <li {% if p == pagination.page %} class="active"{% endif %}>
                 <a href="{{ url_for(endpoint, page=p, **kwargs) }}">{{ p }}</a>
             </li>
         {% else %}
