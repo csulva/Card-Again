@@ -2530,6 +2530,13 @@ div.pagination-text {
   color: white
 }
 
+div.pagination {
+  min-height: 260px;
+  margin-left: 80px;
+  margin-right: 80px;
+  display:inherit
+}
+
 div.user-thumbnail {
   position: absolute;
   padding: 5px;
