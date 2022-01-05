@@ -143,7 +143,7 @@ class Card(db.Model):
     __searchable__ = ['name', 'set_name', 'set_series']
     id = db.Column(db.Integer, primary_key=True)
     card_id = db.Column(db.String())
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String())
     rarity = db.Column(db.String())
     pokedex_number = db.Column(db.Integer)
