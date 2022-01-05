@@ -40,9 +40,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['role_id'], ['roles.id'], ),
     sa.PrimaryKeyConstraint('id'))
 
-    with op.batch_alter_table('users', schema=None) as batch_op:
-        batch_op.create_index(batch_op.f('ix_users_username'), ['username'], unique=True)
-        batch_op.create_index(batch_op.f('ix_users_email'), ['email'], unique=True)
+    with op.batch_alter_table('user', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_user_username'), ['username'], unique=True)
+        batch_op.create_index(batch_op.f('ix_user_email'), ['email'], unique=True)
 
 
     # ### end Alembic commands ###
@@ -54,10 +54,10 @@ def downgrade():
     #     batch_op.drop_column('last_seen')
     #     batch_op.drop_column('about_me')
 
-    with op.batch_alter_table('users', schema=None) as batch_op:
-        batch_op.drop_index(batch_op.f('ix_users_username'))
+    with op.batch_alter_table('user', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_user_username'))
 
-    op.drop_table('users')
+    op.drop_table('user')
     op.drop_table('roles')
     # with op.batch_alter_table('roles', schema=None) as batch_op:
     #     batch_op.drop_index(batch_op.f('ix_roles_default'))
