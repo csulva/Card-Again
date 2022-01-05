@@ -29,7 +29,7 @@ def upgrade():
         batch_op.add_column(sa.Column('normal_price_mid', sa.Float(asdecimal=True), nullable=True))
         batch_op.add_column(sa.Column('normal_price_high', sa.Float(asdecimal=True), nullable=True))
         batch_op.add_column(sa.Column('normal_price_market', sa.Float(asdecimal=True), nullable=True))
-        batch_op.add_column(sa.Column('holofoil_price_low', sa.Float(sdecimal=True), nullable=True))
+        batch_op.add_column(sa.Column('holofoil_price_low', sa.Float(asdecimal=True), nullable=True))
         batch_op.add_column(sa.Column('holofoil_price_mid', sa.Float(asdecimal=True), nullable=True))
         batch_op.add_column(sa.Column('holofoil_price_high', sa.Float(asdecimal=True), nullable=True))
         batch_op.add_column(sa.Column('holofoil_price_market', sa.Float(asdecimal=True), nullable=True))
