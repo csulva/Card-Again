@@ -38,7 +38,7 @@ class TestingConfig(Config):
         f'sqlite:///{os.path.join(basedir, "data-test.sqlite")}'
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get('HEROKU_POSTGRESQL_GRAY_URL') or \
         f'sqlite:///{os.path.join(basedir, "data.sqlite")}'
     if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
         SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
