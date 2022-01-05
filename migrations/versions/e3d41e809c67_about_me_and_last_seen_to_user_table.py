@@ -34,10 +34,10 @@ def upgrade():
     sa.Column('username', sa.String(length=64), nullable=True),
     sa.Column('email', sa.String(length=128), nullable=True),
     sa.Column('password_hash', sa.String(length=128)),
-    sa.Column('role_id', sa.Integer(), nullable=True),
+    # sa.Column('role_id', sa.Integer(), nullable=True),
     sa.Column('about_me', sa.String(length=140), nullable=True),
     sa.Column('last_seen', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['role_id'], ['roles.id'], ),
+    # sa.ForeignKeyConstraint(['role_id'], ['roles.id'], ),
     sa.PrimaryKeyConstraint('id'))
 
     with op.batch_alter_table('users', schema=None) as batch_op:
