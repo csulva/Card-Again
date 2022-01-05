@@ -152,7 +152,7 @@ class Card(db.Model):
     set_series = db.Column(db.String())
     url = db.Column(db.String())
     last_updated = db.Column(db.String())
-    normal_price_low = db.Column(db.Float(precision=(10, 2), asdecimal=True))
+    normal_price_low = db.Column(db.Float(asdecimal=True))
     normal_price_mid = db.Column(db.Float(precision=(10, 2), asdecimal=True))
     normal_price_high = db.Column(db.Float(precision=(10, 2), asdecimal=True))
     normal_price_market = db.Column(db.Float(precision=(10, 2), asdecimal=True))
