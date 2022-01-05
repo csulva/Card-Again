@@ -1,7 +1,7 @@
 from app import create_app, db
 import os
 from flask_migrate import Migrate, upgrade
-from app.models import Role, User, Card
+from app.models import Follow, Role, User, Card
 import logging
 
 
@@ -11,7 +11,7 @@ migrate = Migrate(app, db, render_as_batch=True)
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Card=Card, Role=Role)
+    return dict(db=db, User=User, Card=Card, Role=Role, Follow=Follow)
 
 @app.cli.command()
 def deploy():
@@ -23,4 +23,4 @@ def deploy():
 
     User.add_self_follows()
 
-    # Card.insert_cards()
+    Card.insert_cards()
