@@ -2,6 +2,7 @@ from app import create_app, db
 import os
 from flask_migrate import Migrate, upgrade
 from app.models import Role, User, Card
+import logging
 
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
@@ -22,4 +23,4 @@ def deploy():
 
     User.add_self_follows()
 
-    Card.insert_cards()
+    # Card.insert_cards()
