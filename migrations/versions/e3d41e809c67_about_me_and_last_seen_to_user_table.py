@@ -29,7 +29,7 @@ def upgrade():
     with op.batch_alter_table('roles', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_roles_default'), ['default'], unique=False)
 
-    op.create_table('users',
+    op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=64), nullable=True),
     sa.Column('email', sa.String(length=128), nullable=True),
