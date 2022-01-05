@@ -131,13 +131,6 @@ class User(UserMixin, db.Model):
                 db.session.add(user)
                 db.session.commit()
 
-    # # get followers' collections
-    # def followed_card_collections(self):
-    #     followed = Card.query.join(
-    #         followers, (followers.c.followed_id == Card.user_id)).filter(
-    #             followers.c.follower_id == self.id)
-    #     own = Card.query.filter_by(user_id=self.id)
-    #     return followed.union(own).order_by(Card.id.asc())
 
 class Card(db.Model):
     __searchable__ = ['name', 'set_name', 'set_series']
@@ -342,7 +335,6 @@ class Card(db.Model):
             db.session.add(card)
         Card.generate_slug()
         db.session.commit()
-
 
 @login.user_loader
 def load_user(id):
