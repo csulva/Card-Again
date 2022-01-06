@@ -22,5 +22,3 @@ def deploy():
     Role.insert_roles()
 
     User.add_self_follows()
-
-    Card.insert_cards()
