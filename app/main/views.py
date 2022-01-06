@@ -157,7 +157,7 @@ def remove(card_id):
 @main.route('/search_results/<search>')
 def search_results(search):
     page = request.args.get('page', 1, type=int)
-    if Card.query.filter(Card.name.contains(search)).all():
+    if Card.query.filter(Card.name.contains(search.title())).all():
         length = len(Card.query.filter(Card.name.contains(search)).all())
         cards = Card.query.filter(Card.name.contains(search)).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
             error_out=False)
