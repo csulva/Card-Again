@@ -19,9 +19,9 @@ def index():
             return redirect(url_for('main.no_results', form=form, search=' '))
         elif Card.query.filter(Card.name.ilike(f'%{search}%')).all():
             return redirect(url_for('main.search_results', search=search))
-        elif Card.query.filter(Card.set_name.contains(search)).all():
+        elif Card.query.filter(Card.set_name.ilike(f'%{search}%')).all():
             return redirect(url_for('main.search_results', search=search))
-        elif Card.query.filter(Card.name.contains(search)).all() == []:
+        elif Card.query.filter(Card.name.ilike(f'%{search}%')).all() == []:
             return redirect(url_for('main.no_results', search=search))
 
             # for set in set_names:
@@ -162,24 +162,10 @@ def search_results(search):
         cards = Card.query.filter(Card.name.ilike(f'%{search}%')).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
             error_out=False) or Card.query.filter(Card.name.contains(search.title())).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
             error_out=False)
-    elif Card.query.filter(Card.set_name.contains(search)):
-        length = len(Card.query.filter(Card.set_name.contains(search)).all())
-        cards = Card.query.filter(Card.set_name.contains(search)).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
+    elif Card.query.filter(Card.set_name.ilike(f'%{search}%')):
+        length = len(Card.query.filter(Card.set_name.ilike(f'%{search}%')).all())
+        cards = Card.query.filter(Card.set_name.ilike(f'%{search}%')).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
             error_out=False)
-    # elif search:
-    #     new_search = []
-    #     for set in set_names:
-    #         if search in set:
-    #             new_search.append(set)
-    #     new_cards = []
-    #     for new_set in new_search:
-    #         cards = Card.query.filter_by(set_name=new_set)
-    #         new_cards.append(cards)
-    #         length = len(new_cards)
-    #     for card in new_cards:
-    #         for new_card in card:
-    #             cards = Card.query.filter_by(name=new_card.name).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
-    #             error_out=False)
     next_url = url_for('main.search_results', search=search, page=cards.next_num) \
         if cards.has_next else None
     prev_url = url_for('main.search_results', search=search, page=cards.prev_num) \
@@ -198,9 +184,9 @@ def no_results(search):
             flash('Please enter a search...')
             message = f'Your search "{new_search} " yielded no results. Try again.'
             return render_template('no_results.html', form=form, search=new_search, message=message)
-        elif Card.query.filter(Card.name.contains(new_search)).all():
+        elif Card.query.filter(Card.name.ilike(f'%{search}%')).all():
             return redirect(url_for('main.search_results', search=new_search))
-        elif Card.query.filter(Card.set_name.contains(new_search)).all():
+        elif Card.query.filter(Card.set_name.ilike(f'%{search}%')).all():
             return redirect(url_for('main.search_results', search=new_search))
         else:
             cards = []
