@@ -160,7 +160,6 @@ def search_results(search):
     if Card.query.filter(Card.name.ilike(f'%{search}%')).all():
         length = len(Card.query.filter(Card.name.ilike(f'%{search}%')).all())
         cards = Card.query.filter(Card.name.ilike(f'%{search}%')).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
-            error_out=False) or Card.query.filter(Card.name.contains(search.title())).order_by(Card.pokedex_number.asc()).paginate(page, per_page=current_app.config['CARDAGAIN_CARDS_PER_PAGE'],
             error_out=False)
     elif Card.query.filter(Card.set_name.ilike(f'%{search}%')):
         length = len(Card.query.filter(Card.set_name.ilike(f'%{search}%')).all())
