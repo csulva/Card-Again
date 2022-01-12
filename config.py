@@ -23,10 +23,6 @@ class Config:
     CARDAGAIN_CARDS_PER_PAGE = 20
     CARDAGAIN_FOLLOWERS_PER_PAGE = 20
 
-    MYSQL_USER = os.environ.get('MYSQL_USER')
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD')
-    MYSQL_HOST = os.environ.get('MYSQL_HOST')
-    MYSQL_DB = os.environ.get('MYSQL_DB')
     MYSQL_CURSOR_CLASS = 'DictCursor'
 
     HTTPS_REDIRECT = False
@@ -37,10 +33,11 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_DEV_URL') or \
         f'sqlite:///{os.path.join(basedir, "data-dev.sqlite")}'
 
-class MySQLConfig(Config):
+class AWSConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('MYSQL_DATABASE_URL')
 
 class TestingConfig(Config):
@@ -100,6 +97,6 @@ config = {'development': DevelopmentConfig,
 'testing': TestingConfig,
 'production': ProductionConfig,
 'default': DevelopmentConfig,
-'mysql': MySQLConfig,
+'aws': AWSConfig,
 'heroku': HerokuConfig,
 }
