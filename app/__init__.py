@@ -42,7 +42,6 @@ def create_app(config_name='default'):
                         'cdnjs.cloudflare.com',
                     ],
                     # allow images from anywhere,
-                    #   including unicornify.pictures
                     'img-src': '*'
                 }
             )
