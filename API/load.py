@@ -2,17 +2,20 @@ import requests
 import json
 
 def load_cards():
-
+    """Load card data from the API to a local json file titled "card_data.json"
+    """
     list_of_card_info = []
     num = 1
     while num < 59:
+        # Connect to API
         BASE_URL = f'https://api.pokemontcg.io/v2/cards/?search=a&page={num}'
         request = requests.get(BASE_URL)
         data = request.json()
+
+        # Collect data
         for key, value in data.items():
             if key == 'data':
                 for dicts in value:
-                    # for x in dicts:
                     dict_of_card_info = {}
                     dict_of_card_info['id'] = dicts['id']
                     dict_of_card_info['name'] = dicts['name']
@@ -49,26 +52,17 @@ def load_cards():
                             dict_of_card_info['price'] = dicts['tcgplayer']['prices']
                     except:
                         dict_of_card_info['price'] = None
-                    # try:
-                    #     if dicts['tcgplayer']['prices']['normal']:
-                    #         dict_of_card_info['low_price'] = dicts['tcgplayer']['prices']['normal']['low']
-                    # except:
-                    #     if dicts['tcgplayer']['prices']['holofoil']:
-                    #         dict_of_card_info['low_price'] = dicts['tcgplayer']['prices']['holofoil']['low']
-                    #         # dict_of_card_info['mid_price'] = dicts['tcgplayer']['prices']['holofoil']['mid'] or dicts['tcgplayer']['prices']['normal']['mid']
-                    #         # dict_of_card_info['high_price'] = dicts['tcgplayer']['prices']['holofoil']['high'] or dicts['tcgplayer']['prices']['normal']['high']
-                    #         # dict_of_card_info['market_price'] = dicts['tcgplayer']['prices']['holofoil']['market'] or dicts['tcgplayer']['prices']['normal']['market']
-                    # else:
-                    #     dict_of_card_info['low_price'] = None
                     list_of_card_info.append(dict_of_card_info)
-                # list_of_all_information.append(list_of_card_info)
         num += 1
 
+    # Write data to local file
     with open('API/card_data.json', 'w') as fout:
         json.dump(list_of_card_info, fout)
 
+# For loading the data
 # with open('API/card_ids.json', 'r') as fin:
 #     ids = json.load(fin)
 
+# Run the function
 load_cards()
 
