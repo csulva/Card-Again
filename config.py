@@ -1,25 +1,28 @@
+# Config classes differentiated based on stage of application
+
 import os
 
 from flask_mysqldb import MySQL
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+# Child config class
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or "anyrandomstringofstrings#123"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # Email configurations
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-
     CARDAGAIN_ADMIN = os.environ.get('CARDAGAIN_ADMIN')
     CARDAGAIN_MAIL_SUBJECT_PREFIX = 'Card Again - '
     CARDAGAIN_MAIL_SENDER = f'Card Again Admin <{CARDAGAIN_ADMIN}>'
 
+    # Pagination configurations
     CARDAGAIN_CARDS_PER_PAGE = 20
     CARDAGAIN_FOLLOWERS_PER_PAGE = 20
 
@@ -31,26 +34,29 @@ class Config:
     def init_app(app):
         pass
 
+# Development Configuration
 class DevelopmentConfig(Config):
     DEBUG = True
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_DEV_URL') or \
         f'sqlite:///{os.path.join(basedir, "data-dev.sqlite")}'
 
+# Configuration for deploying to AWS RDS MySQL Database
 class AWSConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('MYSQL_DATABASE_URL')
 
+# Testing Configuration
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_TEST_URL') or \
         f'sqlite:///{os.path.join(basedir, "data-test.sqlite")}'
 
+# Production Configuration
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('HEROKU_POSTGRESQL_GRAY_URL') or \
         f'sqlite:///{os.path.join(basedir, "data.sqlite")}'
     if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
         SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
-
 
     @classmethod
     def init_app(cls, app):
@@ -76,6 +82,7 @@ class ProductionConfig(Config):
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
 
+# Heroku Configuration for deploying to Heroku in production. FLASK_CONFIG should be 'heroku'
 class HerokuConfig(ProductionConfig):
     HTTPS_REDIRECT = True if os.environ.get('DYNO') else False
 
@@ -93,6 +100,7 @@ class HerokuConfig(ProductionConfig):
         from werkzeug.middleware.proxy_fix import ProxyFix
         app.wsgi_app = ProxyFix(app.wsgi_app)
 
+# Names of config classes
 config = {'development': DevelopmentConfig,
 'testing': TestingConfig,
 'production': ProductionConfig,
