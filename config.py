@@ -1,5 +1,4 @@
 # Config classes differentiated based on stage of application
-
 import os
 
 from flask_mysqldb import MySQL
