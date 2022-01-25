@@ -10,8 +10,8 @@ from schedule import scheduler
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-login = LoginManager()
-login.login_view = 'auth.login'
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
 moment = Moment()
 mail = Mail()
 csrf = CSRFProtect()
