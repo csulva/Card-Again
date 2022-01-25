@@ -6,7 +6,6 @@ from flask_login import LoginManager
 from flask_moment import Moment
 from flask_mail import Mail
 from flask_wtf.csrf import CSRFProtect
-from schedule import scheduler
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -21,13 +20,13 @@ def create_app(config_name='default'):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    db.init_app(app)
-
     bootstrap.init_app(app)
-    login.init_app(app)
+    login_manager.init_app(app)
     moment.init_app(app)
     mail.init_app(app)
     csrf.init_app(app)
+
+    db.init_app(app)
 
     # scheduler.init_app(app)
     # import schedule
