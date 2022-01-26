@@ -4,7 +4,7 @@ from flask import render_template, url_for, redirect, flash, request
 from .forms import LoginForm, RegistrationForm, ChangeEmail, ChangePassword, ChangeUsername
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
-from app.email import send_email
+from app.emails import send_email
 from werkzeug.urls import url_parse
 
 @auth.route('/login', methods=["GET", "POST"])
