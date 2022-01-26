@@ -6,6 +6,7 @@ from flask_login import LoginManager
 from flask_moment import Moment
 from flask_mail import Mail
 from flask_wtf.csrf import CSRFProtect
+from flask_apscheduler import APScheduler
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -14,6 +15,7 @@ login_manager.login_view = 'auth.login'
 moment = Moment()
 mail = Mail()
 csrf = CSRFProtect()
+scheduler = APScheduler()
 
 def create_app(config_name='default'):
     app = Flask(__name__)
@@ -28,9 +30,9 @@ def create_app(config_name='default'):
 
     db.init_app(app)
 
-    # scheduler.init_app(app)
-    # import schedule
-    # scheduler.start()
+    scheduler.init_app(app)
+    from app import tasks
+    scheduler.start()
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
