@@ -2,18 +2,9 @@
     {% for card in cards %}
     <li class = "card">
         <div class="profile-thumbnail">
-            {# <a href="{{ url_for('main.card', slug=card.slug) }}"> #}
                 <img class="img-rounded profile-thumbnail" src="{{ card.image }}">
-            {# </a>  #}
         </div>
         <div class="card-content">
-
-            {# <div class="card-owner">
-                <a href="{{ url_for('main.user', username=card.owner.username) }}">
-                    {{ card.owner.username }}
-                </a>
-            </div> #}
-
 
             <div class="card-title">
                 <h1><a href="{{ url_for('main.card', slug=card.slug) }}">{{ card.name }}</a></h1>
@@ -46,15 +37,6 @@
                 </div>
                 {% endif %}
             </div>
-
-
-            {# <div class="card-description">
-                {% if composition.description_html %}
-                {{ composition.description_html | safe }}
-                {% else %}
-                {{ composition.description }}
-                {% endif %}
-            </div> #}
 
     </li>
     </div>
