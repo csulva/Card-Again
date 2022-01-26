@@ -64,5 +64,5 @@ def load_cards():
 #     ids = json.load(fin)
 
 # Run the function
-load_cards()
+# load_cards()
 
