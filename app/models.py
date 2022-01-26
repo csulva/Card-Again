@@ -1,9 +1,8 @@
-from app import db, login
+from app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from flask_login.mixins import AnonymousUserMixin
 from hashlib import md5
-from . import login_manager
 from datetime import datetime
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
