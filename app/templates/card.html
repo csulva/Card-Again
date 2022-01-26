@@ -3,32 +3,5 @@
 {% block content %}
 {{ super() }}
 {% include '_cards.html' %}
-<!--
-<ul class="card">
-    {% for card in cards %}
-    <li class = "one-card">
-        <div class="card-profile-thumbnail">
-            {# <a href="{{ url_for('main.card', slug=card.slug) }}"> #}
-                <img class="img-rounded card-profile-thumbnail" src="{{ card.image }}">
-            {# </a>  #}
-        </div>
-        <div class="one-card-content">
-
-            {# <div class="card-owner">
-                <a href="{{ url_for('main.user', username=card.owner.username) }}">
-                    {{ card.owner.username }}
-                </a>
-            </div> #}
-
-
-            <div class="one-card-title">
-                <h1>{{card.name}}</h1>
-               {# <a href="{{ url_for('main.card', slug=card.slug) }}">{{ card.name }}</a>  #}
-
-            </div>
-        </div>
-    </li>
-    {% endfor %}
-</ul> -->
 
 {% endblock content %}
