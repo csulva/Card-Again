@@ -8,6 +8,7 @@ from flask_mail import Mail
 from flask_wtf.csrf import CSRFProtect
 from flask_apscheduler import APScheduler
 
+# Class instances from imports
 bootstrap = Bootstrap()
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -17,6 +18,7 @@ mail = Mail()
 csrf = CSRFProtect()
 scheduler = APScheduler()
 
+# App factory
 def create_app(config_name='default'):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -30,9 +32,12 @@ def create_app(config_name='default'):
 
     db.init_app(app)
 
+    # Importing and running scheduled tasks from tasks.py
     scheduler.init_app(app)
     from app import tasks
     scheduler.start()
+
+    # Registering blueprints
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
