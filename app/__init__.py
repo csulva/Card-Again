@@ -33,12 +33,12 @@ def create_app(config_name='default'):
     db.init_app(app)
 
     # Importing and running scheduled tasks from tasks.py
-    scheduler.init_app(app)
-    from app import tasks
-    scheduler.start()
+    with app.app_context():
+        scheduler.init_app(app)
+        from app import tasks
+        scheduler.start()
 
     # Registering blueprints
-
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
