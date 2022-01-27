@@ -1,8 +1,7 @@
 from API.load import load_cards
 from app.models import Card
 from app import scheduler
-from flask import current_app
-
+# from flask import current_app
 # app=current_app._get_current_object()
 # with app.app_context():
 
