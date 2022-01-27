@@ -12,10 +12,7 @@ logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 def update_cards():
     with scheduler.app.app_context():
         load_cards()
-        print('test cards loaded')
         Card.insert_cards()
-        print('new cards inserted into db')
         Card.update_cards()
-        print('cards updated')
 
 scheduler.add_listener(update_cards, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
