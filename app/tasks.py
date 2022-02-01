@@ -8,7 +8,7 @@ logging.basicConfig()
 logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 
 
-@scheduler.task('interval', id='update_cards', day_of_week=(0,4), hour=0)
+@scheduler.task('cron', id='update_cards', day_of_week=0, hour=0)
 def update_cards():
     with scheduler.app.app_context():
         load_cards()
