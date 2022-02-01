@@ -11,7 +11,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Ragtime
 
 For Production:
 ```bash
-pip install requirements/heroku.txt
+pip install -r requirements/heroku.txt
 ```
 
 For use with Production on Amazon Web Services, see [aws-README.md](https://github.com/csulva/Card-Again/blob/main/aws-README.md):
