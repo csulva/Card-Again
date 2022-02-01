@@ -14,8 +14,4 @@ For Production:
 pip install requirements/heroku.txt
 ```
 
-For use with Production on Amazon Web Services, see :
-sudo apt-get install mysql-server
-sudo apt-get install libmysqlclient-dev
-sudo apt install python3-flask
-pip install -r requirements/aws.txt
+For use with Production on Amazon Web Services, see [aws-README.md](https://github.com/csulva/Card-Again/blob/main/aws-README.md):
