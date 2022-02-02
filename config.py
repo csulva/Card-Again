@@ -40,10 +40,6 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_DEV_URL') or \
         f'sqlite:///{os.path.join(basedir, "data-dev.sqlite")}'
 
-# Configuration for deploying to AWS RDS MySQL Database
-class AWSConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('MYSQL_DATABASE_URL')
-
 # Testing Configuration
 class TestingConfig(Config):
     TESTING = True
@@ -80,6 +76,10 @@ class ProductionConfig(Config):
         )
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
+
+# Configuration for deploying to AWS RDS MySQL Database
+class AWSConfig(ProductionConfig):
+    SQLALCHEMY_DATABASE_URI = os.environ.get('MYSQL_DATABASE_URL')
 
 # Heroku Configuration for deploying to Heroku in production. FLASK_CONFIG should be 'heroku'
 class HerokuConfig(ProductionConfig):
