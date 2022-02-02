@@ -2,6 +2,26 @@
 
 [Card Again](http://cardagain.net/) is your one-stop website to view the current market value of your Pokemon cards. Search for more than 14,000 cards, add them to your collection, follow your friends to see their collections, and find links to buy and sell each card. You can find all of these features on Card Again. Be sure to register for an account today, and start collecting!
 
+# Table of Contents
+[Installation](#installation)
+
+[Usage](#usage)
+
+[Card Data](#card-data)
+
+[Schdedule Tasks To Update Cards](#schdedule-tasks-to-update-cards-table-automatically)
+
+[Migrations](#migrations)
+
+[Send Emails](#send-emails)
+
+[Environment Variables](#environment-variables)
+
+[Contributing](#contributing)
+
+[References](#references)
+
+
 
 ## Installation
 
