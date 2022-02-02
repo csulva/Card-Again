@@ -114,14 +114,14 @@ For a full migration command reference, run ```flask db --help```.
 
 ## Send Emails
 
-For email sending to work properly with this app, including confirmation emails, you must have an email that accepts SMTP authentication. Then, you must then set the environment variables MAIL_USERNAME, MAIL_PASSWORD, and RAGTIME_ADMIN that are found in ```config.py```
+For email sending to work properly with this app, including confirmation emails, you must have an email that accepts SMTP authentication. Then, you must then set the environment variables MAIL_USERNAME, MAIL_PASSWORD, and CARDAGAIN_ADMIN that are found in ```config.py```
 
 You can configure those variables in a bash script:
 
 ```bash
 export MAIL_USERNAME=<your_username>
 export MAIL_PASSWORD=<your_password>
-export RAGTIME_ADMIN=<yourusername@example.com>
+export CARDAGAIN_ADMIN=<yourusername@example.com>
 ```
 ## Environment Variables
 
@@ -133,6 +133,14 @@ touch .env
 Be sure to create it in your root directory and not to push it to GitHub or any public space where it can be viewed. Then you can add your environment variables to the file. For example:
 ```python
 # .env
-FLASK_APP=ragtime.py
+FLASK_APP=cardagain.py
 ```
 
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## References
+[CodingNomads Python Web Development](https://codingnomads.co/career-track/professional-python-web-development-course)
+[Pokemon TCG Developers API](https://pokemontcg.io/)
