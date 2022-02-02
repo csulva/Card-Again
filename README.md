@@ -22,18 +22,19 @@ For use with Production on Amazon Web Services, see [aws-README.md](https://gith
 
 ## Usage
 To start using the app, open a ```flask shell``` session:
-```python
+```bash
 export FLASK_APP=cardagain
 flask shell
 ```
-```python
+```shell
 >>> db.create_all()
 >>> Role.insert_roles()
 >>> User.add_self_follows()
 >>> exit()
 ```
 Add yourself to the database in a ```flask shell``` session:
-```python
+
+```shell
 >>> u = User(username='yourusername', email='youremail', confirmed=True)
 >>> u.set_password('yourpassword)
 >>> db.session.add(u)
@@ -43,7 +44,7 @@ Add yourself to the database in a ```flask shell``` session:
 Note: you can also register in your own app!
 First, run the program:
 
-```python
+```bash
 flask run
 ```
 Then, navigate to your *register* template: __localhost:5000/auth/register__ and register your email address. Confirm yourself as a user by opening the link sent to you in an email (see [Send Emails](#send-emails)).
@@ -52,21 +53,52 @@ Now you can add as many cards to your collection as you want. You can also searc
 
 ## Card Data
 
-The card data is requested from [Pokemon TCG Developers API](https://pokemontcg.io/) and stored locally ```API/card_data.json```.
+The card data is requested from [Pokemon TCG Developers API](https://pokemontcg.io/) and stored locally in ```API/card_data.json```.
 
 To update the card data from the API, run the ```load_cards()``` function in ```API/load.py```.
 Next, you can add the card data to the database.
 First, open a ```flask shell``` session, then run:
 
-```python
+```shell
 >>> Card.insert_cards()
 ```
 
 To update the cards inforamation periodically, as prices change all the time, in a ```flask shell``` session, run:
-```python
+```shell
 >>> Card.update_cards()
 ```
+## Schdedule Tasks to Update Cards Table Automatically
 
+While running, the app will load, add, and update cards automatically. In the application factory, you will notice the class instance ```scheduler```:
+```python
+# app/__init__.py
+from flask_apscheduler import APScheduler
+scheduler = APScheduler()
+```
+Also, in the ```create_app()``` function in the applicaton factory, it loads your tasks from ```tasks.py```
+```python
+# app/__init__.py
+...
+
+    # Importing and running scheduled tasks from tasks.py
+    with app.app_context():
+        scheduler.init_app(app)
+        from app import tasks
+        scheduler.start()
+```
+In the ```tasks.py``` file in the ```app``` directory, you will see the scheduled tasks to be run every Monday:
+
+```python
+# app/tasks.py
+
+@scheduler.task('cron', id='update_cards', day_of_week=0, hour=0)   # for day_of_week, 0 is Monday
+def update_cards():
+    with scheduler.app.app_context():
+        load_cards()
+        Card.insert_cards()
+        Card.update_cards()
+```
+This means you will not need to manually update your cards as long as the app is running. The function loads the new data, inserts cards (any new cards, skips existing cards), and updates existing cards. You can change the methods in the scheduler decorator function to run the task whenever you wish.
 
 ## Send Emails
 
@@ -74,7 +106,7 @@ For email sending to work properly with this app, including confirmation emails,
 
 You can configure those variables in a bash script:
 
-```python
+```bash
 export MAIL_USERNAME=<your_username>
 export MAIL_PASSWORD=<your_password>
 export RAGTIME_ADMIN=<yourusername@example.com>
