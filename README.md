@@ -100,6 +100,18 @@ def update_cards():
 ```
 This means you will not need to manually update your cards as long as the app is running. The function loads the new data, inserts cards (any new cards, skips existing cards), and updates existing cards. You can change the methods in the scheduler decorator function to run the task whenever you wish.
 
+## Migrations
+Whenever a database migration needs to be made. Run the following commands:
+```bash
+flask db migrate
+```
+This will generate a new migration script. To apply the migration, run:
+```bash
+flask db upgrade
+```
+
+For a full migration command reference, run ```flask db --help```.
+
 ## Send Emails
 
 For email sending to work properly with this app, including confirmation emails, you must have an email that accepts SMTP authentication. Then, you must then set the environment variables MAIL_USERNAME, MAIL_PASSWORD, and RAGTIME_ADMIN that are found in ```config.py```
