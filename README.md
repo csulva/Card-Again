@@ -123,4 +123,16 @@ export MAIL_USERNAME=<your_username>
 export MAIL_PASSWORD=<your_password>
 export RAGTIME_ADMIN=<yourusername@example.com>
 ```
+## Environment Variables
+
+It might be useful to save your environment variables in your project, so you do not need to set them up each time you run the app. To do so, run the following:
+
+```bash
+touch .env
+```
+Be sure to create it in your root directory and not to push it to GitHub or any public space where it can be viewed. Then you can add your environment variables to the file. For example:
+```python
+# .env
+FLASK_APP=ragtime.py
+```
 
