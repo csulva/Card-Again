@@ -1,6 +1,6 @@
 # Card Again
 
-[Card Again](http://cardagain.net/) is your one-stop website to view the current market value of your Pokemon cards. Search for more than 14,000 cards, add them to your collection, follow your friends to see their collections, and find links to buy and sell each card. You can find all of these features on Card Again. Be sure to register for an account today, and start collecting!
+[Card Again](http://cardagain.net/) is your one-stop website to view the current market value of your Pokémon cards. Search for more than 14,000 cards, add them to your collection, follow your friends to see their collections, and find links to buy and sell each card. You can find all of these features on Card Again. Be sure to register for an account today, and start collecting!
 
 # Table of Contents
 [Installation](#installation)
@@ -73,7 +73,7 @@ Now you can add as many cards to your collection as you want. You can also searc
 
 ## Card Data
 
-The card data is requested from [Pokemon TCG Developers API](https://pokemontcg.io/) and stored locally in ```API/card_data.json```.
+The card data is requested from [Pokémon TCG Developers API](https://pokemontcg.io/) and stored locally in ```API/card_data.json```.
 
 To update the card data from the API, run the ```load_cards()``` function in ```API/load.py```.
 Next, you can add the card data to the database.
@@ -156,6 +156,13 @@ Be sure to create it in your root directory and not to push it to GitHub or any 
 FLASK_APP=cardagain.py
 ```
 
+NOTE: For deploying with [Amazon Web Services](https://aws.amazon.com/), I needed to explicitly write out all of my would-be environment variables in my code in order to deploy my app, including creating the app with the correct configuration:
+```python
+# app/__init__.py
+def create_app(config_name='aws'):
+```
+See ```config.py``` for the AWS Configuration. While you're there, be sure to connect it to the correct database link and not to look for the environment variable. I used MySQL through [Amazon Relational Database Service](https://aws.amazon.com/rds/).
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
@@ -164,4 +171,4 @@ Please make sure to update tests as appropriate.
 ## References
 [CodingNomads Python Web Development](https://codingnomads.co/career-track/professional-python-web-development-course)
 
-[Pokemon TCG Developers API](https://pokemontcg.io/)
+[Pokémon TCG Developers API](https://pokemontcg.io/)
