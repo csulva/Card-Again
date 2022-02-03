@@ -5,7 +5,7 @@ from flask_mysqldb import MySQL
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Child config class
+# Parent config class
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or "anyrandomstringofstrings#123"
 
