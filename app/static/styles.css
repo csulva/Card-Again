@@ -2392,11 +2392,13 @@ div.one-card-title{
 
 ul.cards {
   min-height: 320px;
-  margin-top: 100px;
-  margin-left: 150px;
-  margin-right: 150px;
+  margin-top: 80px;
+  margin-left: 100px;
+  margin-right: 100px;
   color: black;
+  display: inline-block;
   list-style-type: none;
+  width: 80%;
 }
 
 li.card {
