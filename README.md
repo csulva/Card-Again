@@ -118,7 +118,7 @@ def update_cards():
         Card.insert_cards()
         Card.update_cards()
 ```
-This means you will not need to manually update your cards as long as the app is running. The function loads the new data, inserts cards (any new cards, skips existing cards), and updates existing cards. You can change the methods in the scheduler decorator function to run the task whenever you wish.
+This means you will not need to manually update your cards as long as the app is running. The function loads the new data, inserts cards (any new cards, skips existing cards), and updates existing cards. You can change the methods in the scheduler decorator function to run the task whenever you wish. Follow me @Chris
 
 ## Migrations
 Whenever a database migration needs to be made. Run the following commands:
