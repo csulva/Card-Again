@@ -11,7 +11,7 @@ class EditProfileForm(FlaskForm):
 
 # Search for card form
 class SearchCardForm(FlaskForm):
-    search = SearchField('Search for a card by "Pokemon" name or "Set" name...')
+    search = SearchField('Search for a card by "Pokémon" name or "Set" name...')
     submit = SubmitField('Submit')
 
 # Search for user form
