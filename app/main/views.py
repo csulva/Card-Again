@@ -279,7 +279,7 @@ def no_results(search):
         if new_search == '' or new_search == ' ':
             flash('Please enter a search...')
             message = f'Your search "{new_search} " yielded no results. Try again.'
-            return render_template('no_results.html', search=new_search, message=message, form=form)
+            return render_template('no_results.html', search='no-results', message=message, form=form)
         elif Card.query.filter(Card.name.ilike(f'%{new_search}%')).all():
             return redirect(url_for('main.search_results', search=new_search))
         elif Card.query.filter(Card.set_name.ilike(f'%{new_search}%')).all():
