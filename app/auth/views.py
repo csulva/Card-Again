@@ -89,10 +89,10 @@ def confirm(token):
         return redirect(url_for('main.index'))
     if current_user.confirm(token):
         db.session.commit()
-        flash('You have confirmed your account! Thank you.')
+        flash('You have confirmed your account. Thank you!')
     else:
         flash("Whoops! That confirmation link either expired, or it isn't valid.")
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.user', username=current_user.username))
 
 @auth.before_app_request
 def before_request():
