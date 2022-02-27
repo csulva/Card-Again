@@ -1,5 +1,6 @@
 import requests
 import json
+import logging
 
 def load_cards():
     """Load card data from the API to a local json file titled "card_data.json"
@@ -59,10 +60,14 @@ def load_cards():
     with open('API/card_data.json', 'w') as fout:
         json.dump(list_of_card_info, fout)
 
+    logging.basicConfig(filename='cardagain.log', level=logging.DEBUG, format='[%(asctime)s %(levelname)s] %(funcName)s - %(message)s')
+    logging.debug('Looks fine.')
+
+
 # For loading the data
 # with open('API/card_ids.json', 'r') as fin:
 #     ids = json.load(fin)
 
 # Run the function
-# load_cards()
+load_cards()
 
