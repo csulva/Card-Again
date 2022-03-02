@@ -9,6 +9,8 @@ from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import json
 import re
+import logging
+
 
 # Relationship table "follows" -- one-to-many -- connects User to Users through follower and following
 class Follow(db.Model):
@@ -351,6 +353,7 @@ class Card(db.Model):
 
         Card.generate_slug()
         db.session.commit()
+        logging.debug('Everything working.')
 
     @staticmethod
     def update_cards():
@@ -438,6 +441,7 @@ class Card(db.Model):
         Card.generate_slug()
         # Commit changes
         db.session.commit()
+        logging.debug('Cards updated.')
 
 # Loads user based on id
 @login_manager.user_loader
