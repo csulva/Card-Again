@@ -32,6 +32,9 @@ def create_app(config_name='default'):
 
     db.init_app(app)
 
+    # import logging
+    # logging.basicConfig(filename='cardagain.log', level=logging.DEBUG, format='[%(asctime)s %(levelname)s] %(funcName)s - %(message)s')
+
     # Importing and running scheduled tasks from tasks.py
     with app.app_context():
         scheduler.init_app(app)
