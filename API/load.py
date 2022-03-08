@@ -1,3 +1,4 @@
+from flask import current_app
 import requests
 import json
 import logging
@@ -60,8 +61,8 @@ def load_cards():
     with open('API/card_data.json', 'w') as fout:
         json.dump(list_of_card_info, fout)
 
-    logging.basicConfig(filename='cardagain.log', level=logging.DEBUG, format='[%(asctime)s %(levelname)s] %(funcName)s - %(message)s')
-    logging.debug('Looks fine.')
+    # Log status to file
+    current_app.logger.info('Cards loaded.')
 
 
 # For loading the data
@@ -69,5 +70,5 @@ def load_cards():
 #     ids = json.load(fin)
 
 # Run the function
-load_cards()
+# load_cards()
 
