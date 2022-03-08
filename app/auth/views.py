@@ -65,6 +65,7 @@ def register():
             db.session.add(user)
             db.session.commit()
             token = user.generate_confirmation_token()
+            # Fix confirmation link
             confirmation_link = url_for('auth.confirm', token=token, _external=True)
             send_email(user.email, 'Welcome to Card Again!', 'mail/welcome', user=user)
             send_email(user.email, 'Confirm your account with Card Again', 'auth/confirm',  confirmation_link=confirmation_link)
