@@ -18,6 +18,7 @@ def update_cards_task():
         Card.insert_cards()
         Card.update_cards()
 
+# Run if EVENT_JOB_ERROR occurs (from above scheduler task)
 def error_callback(error):
     with scheduler.app.app_context():
         current_app.logger.error('Error with task occurred.')
@@ -25,5 +26,5 @@ def error_callback(error):
         current_app.logger.debug(f'Error object was {error}.')
 
 scheduler.add_listener(error_callback, EVENT_JOB_ERROR)
-scheduler.add_listener(error_callback, EVENT_JOB_EXECUTED)
+# scheduler.add_listener(error_callback, EVENT_JOB_EXECUTED)
 
