@@ -1,18 +1,27 @@
+from flask import current_app
 from API.load import load_cards
 from app.models import Card
 from app import scheduler
 from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 import logging
 
-logging.basicConfig()
-logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+# logging.basicConfig()
+logger = logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 
 
-@scheduler.task('cron', id='update_cards', day_of_week=0, hour=0)
-def update_cards():
+@scheduler.task('cron', id='update_cards_task', day_of_week=2, hour=17, minute=0)
+def update_cards_task():
     with scheduler.app.app_context():
         load_cards()
         Card.insert_cards()
         Card.update_cards()
 
-scheduler.add_listener(update_cards, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
+def error_callback(error):
+    with scheduler.app.app_context():
+        current_app.logger.error('Error with task occurred.')
+        print('logging messages')
+        current_app.logger.debug(f'Error object was {error}.')
+
+scheduler.add_listener(error_callback, EVENT_JOB_ERROR)
+scheduler.add_listener(error_callback, EVENT_JOB_EXECUTED)
+
