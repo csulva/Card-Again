@@ -25,6 +25,9 @@ def error_callback(error):
         print('logging messages')
         current_app.logger.debug(f'Error object was {error}.')
 
+# If the task raised an exception during execution
 scheduler.add_listener(error_callback, EVENT_JOB_ERROR)
+
+# If the task was executed successfully
 # scheduler.add_listener(error_callback, EVENT_JOB_EXECUTED)
 
