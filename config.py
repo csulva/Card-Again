@@ -1,4 +1,6 @@
 # Config classes differentiated based on stage of application
+from distutils.debug import DEBUG
+from logging import Formatter
 import os
 
 from flask_mysqldb import MySQL
@@ -29,6 +31,9 @@ class Config:
 
     HTTPS_REDIRECT = False
 
+    SCHEDULER_API_ENABLED = True
+    SCHEDULER_TIMEZONE = "America/New_York"
+
     @staticmethod
     def init_app(app):
         pass
@@ -39,6 +44,21 @@ class DevelopmentConfig(Config):
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_DEV_URL') or \
         f'sqlite:///{os.path.join(basedir, "data-dev.sqlite")}'
+
+    @classmethod
+    def init_app(cls, app):
+        Config.init_app(app)
+
+        import logging
+        from logging import FileHandler, Formatter
+        formatter = Formatter('[%(asctime)s %(levelname)s] %(funcName)s - %(message)s')
+        file_handler = FileHandler(
+            filename='cardagain.log',
+        )
+        file_handler.level=logging.DEBUG
+        file_handler.formatter=formatter
+        app.logger.addHandler(file_handler)
+
 
 # Testing Configuration
 class TestingConfig(Config):
