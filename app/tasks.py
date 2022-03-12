@@ -6,10 +6,10 @@ from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 import logging
 
 # logging.basicConfig()
-logger = logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+# logger = logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 
 # Schedule tasks at given time -- day_of_week=0 is Monday
-@scheduler.task('cron', id='update_cards_task', day_of_week=0, hour=17, minute=0)
+@scheduler.task('cron', id='update_cards_task', day_of_week=0)
 def update_cards_task():
     """Function to run other functions as a task, with scheduer.task
     """
