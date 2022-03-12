@@ -56,6 +56,7 @@ class DevelopmentConfig(Config):
             filename='cardagain.log',
         )
         file_handler.level=logging.DEBUG
+        app.logger.setLevel(logging.DEBUG)
         file_handler.formatter=formatter
         app.logger.addHandler(file_handler)
 
