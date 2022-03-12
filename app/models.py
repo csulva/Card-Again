@@ -353,7 +353,7 @@ class Card(db.Model):
 
         Card.generate_slug()
         db.session.commit()
-        logging.debug('Everything working.')
+        current_app.logger.debug('Everything working.')
 
     @staticmethod
     def update_cards():
@@ -441,7 +441,7 @@ class Card(db.Model):
         Card.generate_slug()
         # Commit changes
         db.session.commit()
-        logging.debug('Cards updated.')
+        current_app.logger.debug('Cards updated.')
 
 # Loads user based on id
 @login_manager.user_loader
