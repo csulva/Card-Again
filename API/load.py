@@ -62,7 +62,7 @@ def load_cards():
         json.dump(list_of_card_info, fout)
 
     # Log status to file
-    current_app.logger.info('Cards loaded.')
+    current_app.logger.debug('Cards loaded.')
 
 
 # For loading the data
