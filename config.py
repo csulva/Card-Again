@@ -45,6 +45,7 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_DEV_URL') or \
         f'sqlite:///{os.path.join(basedir, "data-dev.sqlite")}'
 
+    # Logging config for dev
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
